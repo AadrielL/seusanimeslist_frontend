@@ -1,0 +1,290 @@
+/* src/index.css */
+
+/* NÃO COLOQUE @import url(...) AQUI. As fontes são carregadas via public/index.html */
+
+:root {
+  --bg-dark: #1a1a1a;
+  --text-light: #f0f0f0;
+  --accent-red: #e50914;
+  --border-dark: #333;
+  --input-bg: #2a2a2a;
+  --placeholder-color: #888;
+  --card-bg: #222;
+  --max-content-width: 1600px; /* Largura máxima para o conteúdo principal */
+}
+
+body {
+  margin: 0;
+  font-family: 'Oswald', 'Roboto Mono', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza o conteúdo horizontalmente */
+  justify-content: flex-start;
+  padding: 20px; /* Adiciona um padding geral ao corpo */
+  box-sizing: border-box; /* Garante que padding não adicione à largura/altura total */
+}
+
+#root, .app-container {
+  width: 100%; /* Ocupa 100% da largura disponível */
+  max-width: var(--max-content-width); /* Limita a largura máxima do conteúdo */
+  box-sizing: border-box;
+}
+
+h1, h2, h3 {
+  color: var(--accent-red);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+form {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 450px; /* Mantém formulários em um tamanho razoável */
+  box-sizing: border-box;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--text-light);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: calc(100% - 20px); /* 100% menos o padding */
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid var(--border-dark);
+  background-color: var(--input-bg);
+  color: var(--text-light);
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: var(--placeholder-color);
+}
+
+button {
+  background-color: var(--accent-red);
+  color: var(--text-light);
+  border: none;
+  padding: 12px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Ocupa a largura total do contêiner pai */
+  box-sizing: border-box;
+}
+
+button:hover {
+  background-color: #ff3333;
+}
+
+p {
+  text-align: center; /* Padrão para parágrafos, pode ser sobrescrito */
+  margin-top: 15px;
+  font-size: 0.9em;
+  color: var(--text-light);
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--border-dark), rgba(0, 0, 0, 0));
+  margin: 40px 0;
+}
+
+.dashboard-container {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-container button {
+  margin-top: 20px;
+  max-width: 200px; /* Limita a largura dos botões dentro do dashboard-container */
+}
+
+/* ESTILOS PARA OS CARDS DE ANIME */
+
+/* Grid container para os cards */
+.anime-cards-grid {
+  display: grid;
+  /* Auto-fit cria quantas colunas couberem.
+     minmax(120px, 1fr) faz cada card ter no mínimo 120px e expandir igualmente.
+     Reduzir o 'min' permite mais cards por linha em telas maiores, visando ~8 ou mais. */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+  gap: 20px; /* Espaçamento entre os cards */
+  padding: 20px 0;
+  margin: 20px auto; /* Centraliza o grid */
+  box-sizing: border-box;
+}
+
+/* Estilo para cada card individual de anime */
+.anime-card {
+  background-color: var(--card-bg);
+  padding: 15px; /* Reduzi um pouco o padding para caber mais */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Garante que cards na mesma linha tenham alturas consistentes */
+  box-sizing: border-box;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer; /* Indica que o card pode ser interativo */
+}
+
+.anime-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Estilo da imagem do card (se você tiver urlCapa no backend) */
+.anime-card .anime-cover {
+    width: 100%;
+    height: 180px; /* Altura fixa para as capas */
+    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
+    border-radius: 4px; /* Pequenas bordas arredondadas */
+    margin-bottom: 10px; /* Espaço abaixo da imagem */
+}
+
+.anime-card .anime-title {
+  color: var(--text-light);
+  font-size: 1.2em; /* Reduzi um pouco para caber em cards menores */
+  margin-top: 0;
+  margin-bottom: 5px; /* Reduzi a margem */
+  text-align: center;
+  text-transform: none;
+  letter-spacing: normal;
+  overflow: hidden; /* Garante que o texto não vaze */
+  white-space: nowrap; /* Impede quebras de linha */
+  text-overflow: ellipsis; /* Adiciona "..." se o título for muito longo */
+}
+
+.anime-card .anime-release-date,
+.anime-card .anime-genre {
+  color: var(--placeholder-color);
+  font-size: 0.8em; /* Reduzi um pouco o tamanho da fonte */
+  margin-bottom: 3px;
+  text-align: center;
+}
+
+/* A sinopse será exibida diretamente, sem o efeito hover complexo */
+.anime-card .anime-description {
+  text-align: justify;
+  font-size: 0.85em; /* Tamanho da fonte da descrição */
+  line-height: 1.4;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: var(--text-light);
+  /* Para limitar o número de linhas na sinopse sem hover */
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* Limita a 4 linhas, ajuste conforme necessário */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+}
+
+/* Botão dentro do card */
+.anime-card .add-to-list-button {
+  margin-top: auto; /* Empurra o botão para a parte inferior do card */
+  width: 100%;
+  padding: 8px 12px; /* Padding menor para botões de card */
+  font-size: 0.85em; /* Fonte menor para botões de card */
+}
+
+/* Estilos para links gerais (como "Já tem uma conta? Faça login") */
+p a {
+  color: var(--accent-red);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+p a:hover {
+  color: #ff3333;
+  text-decoration: underline;
+}
+
+/* Media Queries para Responsividade (ajustes finos em diferentes tamanhos de tela) */
+
+/* Para telas menores (celulares) */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+  form {
+    padding: 20px;
+  }
+  .anime-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 2 a 3 cards em celulares */
+    gap: 15px;
+  }
+  .anime-card {
+    padding: 10px;
+  }
+  .anime-card .anime-cover {
+    height: 150px;
+  }
+  .anime-card .anime-title {
+    font-size: 1.1em;
+  }
+  .anime-card .anime-description {
+    font-size: 0.8em;
+  }
+  .anime-card .add-to-list-button {
+    font-size: 0.8em;
+    padding: 6px 10px;
+  }
+}
+
+/* Para tablets (telas médias) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .anime-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 4 a 6 cards em tablets */
+    gap: 18px;
+  }
+  .anime-card .anime-cover {
+    height: 160px;
+  }
+}
+
+/* Para telas muito grandes (desktops ultra-wide, etc.) */
+@media (min-width: 1601px) {
+  .anime-cards-grid {
+    /* Pode-se até reduzir mais o minmax se desejar muitos cards em telas gigantes */
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+    /* Ou fixar um número alto de colunas se o design permitir e a tela for enorme */
+    /* grid-template-columns: repeat(8, 1fr); */ 
+  }
+}
