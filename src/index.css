@@ -1,290 +1,717 @@
-/* src/index.css */
-
-/* NÃO COLOQUE @import url(...) AQUI. As fontes são carregadas via public/index.html */
-
 :root {
-  --bg-dark: #1a1a1a;
-  --text-light: #f0f0f0;
-  --accent-red: #e50914;
-  --border-dark: #333;
-  --input-bg: #2a2a2a;
-  --placeholder-color: #888;
-  --card-bg: #222;
-  --max-content-width: 1600px; /* Largura máxima para o conteúdo principal */
+    /* Cores */
+    --primary-bg-color: #1a1a2e; /* Azul escuro principal */
+    --secondary-bg-color: #16213e; /* Azul escuro um pouco mais claro */
+    --card-bg-color: #0f3460; /* Azul médio para cards */
+    --text-color: #e0e0e0; /* Cinza claro para texto */
+    --highlight-color: #e94560; /* Vermelho/Rosa para destaque */
+    --accent-color: #e94560; /* Cor de acento (botões, links) */
+    --success-color: #28a745; /* Verde para sucesso */
+    --error-color: #dc3545; /* Vermelho para erro */
+    --info-color: #007bff; /* Azul para informação */
+
+    /* Espaçamento */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 50px;
+
+    /* Bordas */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+
+    /* Sombras */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
+/* Base e Layout */
 body {
-  margin: 0;
-  font-family: 'Oswald', 'Roboto Mono', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centraliza o conteúdo horizontalmente */
-  justify-content: flex-start;
-  padding: 20px; /* Adiciona um padding geral ao corpo */
-  box-sizing: border-box; /* Garante que padding não adicione à largura/altura total */
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-y: scroll; /* Sempre mostra a barra de rolagem */
 }
 
 #root, .app-container {
-  width: 100%; /* Ocupa 100% da largura disponível */
-  max-width: var(--max-content-width); /* Limita a largura máxima do conteúdo */
-  box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: var(--spacing-lg);
+    box-sizing: border-box;
 }
 
 h1, h2, h3 {
-  color: var(--accent-red);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
+    color: var(--highlight-color);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+h4 {
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--card-bg-color);
+    margin: var(--spacing-lg) 0;
+    width: 100%;
+}
+
+/* Formulários e Inputs */
 form {
-  background-color: var(--card-bg);
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  margin-bottom: 30px;
-  width: 100%;
-  max-width: 450px; /* Mantém formulários em um tamanho razoável */
-  box-sizing: border-box;
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: var(--spacing-md);
+    box-sizing: border-box;
 }
 
 form div {
-  margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: var(--text-light);
+    font-weight: bold;
+    color: var(--text-color);
 }
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
-  width: calc(100% - 20px); /* 100% menos o padding */
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid var(--border-dark);
-  background-color: var(--input-bg);
-  color: var(--text-light);
-  border-radius: 4px;
-  font-size: 1em;
-  box-sizing: border-box;
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--card-bg-color);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-input::placeholder {
-  color: var(--placeholder-color);
+input::placeholder,
+textarea::placeholder {
+    color: rgba(224, 224, 224, 0.5);
 }
 
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.5);
+}
+
+select option {
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+}
+
+/* Botões */
 button {
-  background-color: var(--accent-red);
-  color: var(--text-light);
-  border: none;
-  padding: 12px 25px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.1em;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: background-color 0.3s ease;
-  width: 100%; /* Ocupa a largura total do contêiner pai */
-  box-sizing: border-box;
+    background-color: var(--accent-color);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-shrink: 0; /* Evita que o botão encolha em flexbox */
 }
 
 button:hover {
-  background-color: #ff3333;
+    background-color: #c93a52; /* Um pouco mais escuro */
+    transform: translateY(-2px);
 }
 
-p {
-  text-align: center; /* Padrão para parágrafos, pode ser sobrescrito */
-  margin-top: 15px;
-  font-size: 0.9em;
-  color: var(--text-light);
+button:active {
+    transform: translateY(0);
 }
 
-hr {
-  border: 0;
-  height: 1px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--border-dark), rgba(0, 0, 0, 0));
-  margin: 40px 0;
+button:disabled {
+    background-color: #6c757d; /* Cinza */
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
 }
 
-.dashboard-container {
-  background-color: var(--card-bg);
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  margin-bottom: 20px;
-  width: 100%;
-  box-sizing: border-box;
+/* Links */
+a {
+    color: var(--highlight-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.dashboard-container button {
-  margin-top: 20px;
-  max-width: 200px; /* Limita a largura dos botões dentro do dashboard-container */
+a:hover {
+    color: #ff6b81; /* Um pouco mais claro */
+    text-decoration: underline;
 }
 
-/* ESTILOS PARA OS CARDS DE ANIME */
+p a {
+    font-weight: bold;
+}
 
-/* Grid container para os cards */
+/* Contêiner de Autenticação */
+.auth-container {
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    max-width: 500px;
+    width: 100%;
+    margin: var(--spacing-xl) auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.auth-container p {
+    margin-top: var(--spacing-md);
+}
+
+/* Mensagens Globais e de Formulário (Padronizado) */
+.global-message-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+    z-index: 1000;
+}
+
+.global-message {
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    font-weight: bold;
+    width: fit-content;
+    max-width: 90%;
+    box-sizing: border-box;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.global-message.success {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.global-message.error {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+}
+
+.global-message.info {
+    background-color: rgba(0, 123, 255, 0.2);
+    color: var(--info-color);
+    border: 1px solid var(--info-color);
+}
+
+/* Dashboard */
+.dashboard-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.dashboard-nav {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-button {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.nav-button:hover {
+    background-color: #1a4d80;
+}
+
+/* NOVO: Contêiner para elementos fixos do cabeçalho */
+.header-fixed-container {
+    position: fixed;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm); /* Espaçamento entre os elementos fixos */
+}
+
+/* Ajustes para o botão de logout fixo (dentro do novo contêiner) */
+.fixed-logout-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* NOVO: Estilo para a barra de busca no cabeçalho */
+.header-search-form {
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    max-width: 250px;
+}
+
+.header-search-form input {
+    padding: var(--spacing-xs);
+    font-size: 0.85rem;
+    border: 1px solid var(--card-bg-color);
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius-sm);
+    flex-grow: 1;
+}
+
+.header-search-form button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+
+/* Cards de Anime */
 .anime-cards-grid {
-  display: grid;
-  /* Auto-fit cria quantas colunas couberem.
-     minmax(120px, 1fr) faz cada card ter no mínimo 120px e expandir igualmente.
-     Reduzir o 'min' permite mais cards por linha em telas maiores, visando ~8 ou mais. */
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
-  gap: 20px; /* Espaçamento entre os cards */
-  padding: 20px 0;
-  margin: 20px auto; /* Centraliza o grid */
-  box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    width: 100%;
+    padding-top: var(--spacing-md);
 }
 
-/* Estilo para cada card individual de anime */
 .anime-card {
-  background-color: var(--card-bg);
-  padding: 15px; /* Reduzi um pouco o padding para caber mais */
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%; /* Garante que cards na mesma linha tenham alturas consistentes */
-  box-sizing: border-box;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  cursor: pointer; /* Indica que o card pode ser interativo */
+    background-color: var(--card-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .anime-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* Estilo da imagem do card (se você tiver urlCapa no backend) */
 .anime-card .anime-cover {
-    width: 100%;
-    height: 180px; /* Altura fixa para as capas */
-    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorção */
-    border-radius: 4px; /* Pequenas bordas arredondadas */
-    margin-bottom: 10px; /* Espaço abaixo da imagem */
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .anime-card .anime-title {
-  color: var(--text-light);
-  font-size: 1.2em; /* Reduzi um pouco para caber em cards menores */
-  margin-top: 0;
-  margin-bottom: 5px; /* Reduzi a margem */
-  text-align: center;
-  text-transform: none;
-  letter-spacing: normal;
-  overflow: hidden; /* Garante que o texto não vaze */
-  white-space: nowrap; /* Impede quebras de linha */
-  text-overflow: ellipsis; /* Adiciona "..." se o título for muito longo */
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
-.anime-card .anime-release-date,
 .anime-card .anime-genre {
-  color: var(--placeholder-color);
-  font-size: 0.8em; /* Reduzi um pouco o tamanho da fonte */
-  margin-bottom: 3px;
-  text-align: center;
+    font-size: 0.9rem;
+    color: rgba(224, 224, 224, 0.7);
+    margin-bottom: var(--spacing-xs);
 }
 
-/* A sinopse será exibida diretamente, sem o efeito hover complexo */
 .anime-card .anime-description {
-  text-align: justify;
-  font-size: 0.85em; /* Tamanho da fonte da descrição */
-  line-height: 1.4;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  color: var(--text-light);
-  /* Para limitar o número de linhas na sinopse sem hover */
-  display: -webkit-box;
-  -webkit-line-clamp: 4; /* Limita a 4 linhas, ajuste conforme necessário */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+    font-size: 0.85rem;
+    text-align: left;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: var(--spacing-sm);
+    flex-grow: 1;
 }
 
-/* Botão dentro do card */
 .anime-card .add-to-list-button {
-  margin-top: auto; /* Empurra o botão para a parte inferior do card */
-  width: 100%;
-  padding: 8px 12px; /* Padding menor para botões de card */
-  font-size: 0.85em; /* Fonte menor para botões de card */
+    width: 100%;
+    margin-top: var(--spacing-sm);
 }
 
-/* Estilos para links gerais (como "Já tem uma conta? Faça login") */
-p a {
-  color: var(--accent-red);
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+/* Destaque de Status (nas cards) */
+.anime-status-highlight {
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
+    white-space: nowrap;
 }
 
-p a:hover {
-  color: #ff3333;
-  text-decoration: underline;
+.anime-status-highlight.completed {
+    background-color: var(--success-color);
+    color: white;
+}
+.anime-status-highlight.watching {
+    background-color: var(--info-color);
+    color: white;
+}
+.anime-status-highlight.plan-to-watch {
+    background-color: #ffc107; /* Amarelo */
+    color: #333;
+}
+.anime-status-highlight.on-hold {
+    background-color: #6c757d; /* Cinza */
+    color: white;
+}
+.anime-status-highlight.dropped {
+    background-color: var(--error-color);
+    color: white;
 }
 
-/* Media Queries para Responsividade (ajustes finos em diferentes tamanhos de tela) */
-
-/* Para telas menores (celulares) */
-@media (max-width: 600px) {
-  body {
-    padding: 10px;
-  }
-  form {
-    padding: 20px;
-  }
-  .anime-cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 2 a 3 cards em celulares */
-    gap: 15px;
-  }
-  .anime-card {
-    padding: 10px;
-  }
-  .anime-card .anime-cover {
-    height: 150px;
-  }
-  .anime-card .anime-title {
-    font-size: 1.1em;
-  }
-  .anime-card .anime-description {
-    font-size: 0.8em;
-  }
-  .anime-card .add-to-list-button {
-    font-size: 0.8em;
-    padding: 6px 10px;
-  }
+/* Botões Fixos e Navegação */
+/* O .fixed-logout-button agora está dentro de .header-fixed-container e ajustado */
+/* O .fixed-back-button mantém sua posição fixa na esquerda */
+.fixed-back-button {
+    position: fixed;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    z-index: 1000;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+    background-color: var(--card-bg-color); /* Cor mais neutra */
 }
 
-/* Para tablets (telas médias) */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .anime-cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* 4 a 6 cards em tablets */
-    gap: 18px;
-  }
-  .anime-card .anime-cover {
-    height: 160px;
-  }
+.fixed-back-button:hover {
+    background-color: #1a4d80;
 }
 
-/* Para telas muito grandes (desktops ultra-wide, etc.) */
-@media (min-width: 1601px) {
-  .anime-cards-grid {
-    /* Pode-se até reduzir mais o minmax se desejar muitos cards em telas gigantes */
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
-    /* Ou fixar um número alto de colunas se o design permitir e a tela for enorme */
-    /* grid-template-columns: repeat(8, 1fr); */ 
-  }
+.scroll-to-top-button {
+    position: fixed;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--box-shadow);
+    z-index: 999;
+}
+
+/* Minha Lista de Animes */
+.my-anime-list-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.my-anime-list-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: var(--spacing-md);
+}
+
+.sort-by-status-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    justify-content: center;
+}
+
+.sort-by-status-container select {
+    max-width: 200px;
+}
+
+/* Contadores de Status */
+.status-counters-display {
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 800px;
+    margin-top: var(--spacing-md);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.status-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.status-counter-badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-weight: bold;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Cores para badges (mesmas do destaque de status) */
+.status-counter-badge.completed {
+    background-color: var(--success-color);
+    color: white;
+}
+.status-counter-badge.watching {
+    background-color: var(--info-color);
+    color: white;
+}
+.status-counter-badge.plan-to-watch {
+    background-color: #ffc107;
+    color: #333;
+}
+.status-counter-badge.on-hold {
+    background-color: #6c757d;
+    color: white;
+}
+.status-counter-badge.dropped {
+    background-color: var(--error-color);
+    color: white;
+}
+
+/* Media Queries (Responsividade) */
+@media (max-width: 768px) {
+    #root, .app-container {
+        padding: var(--spacing-md);
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
+
+    .auth-container,
+    form,
+    .dashboard-content,
+    .my-anime-list-container {
+        padding: var(--spacing-md);
+        margin: var(--spacing-md) auto;
+    }
+
+    .anime-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    .anime-card .anime-title {
+        font-size: 1.1rem;
+    }
+
+    .header-fixed-container {
+        flex-direction: column; /* Empilha os itens verticalmente */
+        align-items: flex-end; /* Alinha à direita */
+        gap: var(--spacing-xs); /* Menos espaço entre eles */
+        top: var(--spacing-sm);
+        right: var(--spacing-sm);
+    }
+
+    .fixed-logout-button,
+    .fixed-back-button {
+        top: var(--spacing-sm);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.8rem;
+    }
+
+    .fixed-logout-button {
+        /*right: var(--spacing-sm); <- Removido, controlado pelo header-fixed-container */
+    }
+
+    .fixed-back-button {
+        left: var(--spacing-sm);
+    }
+
+    .scroll-to-top-button {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+        bottom: var(--spacing-sm);
+        right: var(--spacing-sm);
+    }
+
+    /* Removido o ajuste para .search-form aqui, pois não existe mais */
+    /* .search-form {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-form input,
+    .search-form button {
+        width: 100%;
+    } */
+
+    .header-search-form { /* Mantenha este ajuste para o novo formulário de busca */
+        max-width: 180px;
+    }
+
+    .header-search-form input,
+    .header-search-form button {
+        font-size: 0.75rem;
+        padding: var(--spacing-xs);
+    }
+
+    .status-counters-display {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container,
+    form {
+        padding: var(--spacing-sm);
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+
+    .anime-cards-grid {
+        grid-template-columns: 1fr; /* Uma coluna em telas muito pequenas */
+    }
+
+    /* No mobile muito pequeno, os botões e a busca fixos podem atrapalhar. */
+    /* A melhor abordagem é torná-los estáticos ou ajustá-los bem. */
+    /* Mantendo a sua regra anterior para static: */
+    .fixed-logout-button,
+    .fixed-back-button {
+        position: static; /* Remove a fixação para não atrapalhar o layout */
+        margin-bottom: var(--spacing-sm);
+        width: auto;
+    }
+
+    /* O contêiner de elementos fixos também precisa ser ajustado */
+    .header-fixed-container {
+        position: static; /* Não é mais fixo */
+        flex-direction: column; /* Empilha */
+        align-items: stretch; /* Estica para largura total */
+        width: 100%; /* Ocupa a largura total */
+        padding: var(--spacing-sm) 0; /* Adiciona algum padding vertical */
+        margin-bottom: var(--spacing-md); /* Espaçamento abaixo */
+        background-color: transparent; /* Ou uma cor de fundo se quiser que pareça uma seção */
+        box-shadow: none; /* Remove sombra */
+    }
+
+    .header-search-form {
+        max-width: none; /* Permite esticar */
+        width: 100%; /* Ocupa a largura total */
+        padding: var(--spacing-sm); /* Mais padding para melhor toque */
+    }
+
+    .dashboard-nav {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nav-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .my-anime-list-controls {
+        flex-direction: column;
+    }
+
+    .sort-by-status-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sort-by-status-container select {
+        width: 100%;
+        max-width: none;
+    }
+
+    .status-badges-container {
+        flex-direction: column;
+    }
+}
+
+/* Estilos para Scrollbar (WebKit - Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-bg-color);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--highlight-color);
+    border-radius: 10px;
+    border: 3px solid var(--secondary-bg-color); /* Cria um espaço ao redor do thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c93a52; /* Cor um pouco mais escura no hover */
 }

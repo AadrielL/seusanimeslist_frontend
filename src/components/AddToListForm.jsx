@@ -3,7 +3,6 @@ import axioConfig from '../axiosConfig'; // Importe seu axiosConfig
 import { Link, useNavigate } from 'react-router-dom'; // Importe Link e useNavigate
 
 function LoginPage({ onLogin }) {
-    // CORREÇÃO: Mudei 'email' para 'username' (ou 'user', se for o que seu backend espera)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
@@ -17,7 +16,7 @@ function LoginPage({ onLogin }) {
         setLoginMessage('');
 
         try {
-            // CORREÇÃO ESSENCIAL: Adicionando '/api/' à URL do login
+            // CORREÇÃO: URL do endpoint de login com /api/
             const response = await axioConfig.post('/api/auth/login', { username, password });
             const { token } = response.data;
             onLogin(token);
@@ -40,7 +39,7 @@ function LoginPage({ onLogin }) {
         setLoginMessage('');
 
         try {
-            // CORREÇÃO ESSENCIAL: Usando um endpoint de registro separado (assumindo /api/auth/register)
+            // CORREÇÃO: URL do endpoint de registro com /api/ (ASSUMINDO /api/auth/register)
             // IMPORTANTE: VERIFIQUE NO SEU BACKEND QUAL É O ENDPOINT CORRETO PARA REGISTRO!
             const response = await axioConfig.post('/api/auth/register', { username, password });
             setLoginMessage('Registro bem-sucedido! Faça login agora.');
