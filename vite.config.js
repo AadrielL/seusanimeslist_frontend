@@ -1,15 +1,21 @@
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  // Adicione a configuração de 'root' e 'build' para garantir que o build funcione
+  root: './',
+  build: {
+    outDir: 'dist',
+  },
   server: {
     proxy: {
-      // Todas as requisições que começam com '/api' serão redirecionadas para http://localhost:8081
+      // Esta configuração é apenas para desenvolvimento local
       '/api': {
-        target: 'http://localhost:8081', // A porta do seu backend Spring Boot
-        changeOrigin: true, // Necessário para reescrever o host de origem
-        rewrite: (path) => path.replace(/^\/api/, ''), // Remove o '/api' da URL ao enviar para o backend
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
