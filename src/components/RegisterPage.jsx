@@ -11,6 +11,7 @@ function RegisterPage({ setRegisterMessage, registerMessage }) {
         setRegisterMessage('Registrando...');
 
         try {
+            // A API de registro do seu backend está configurada para receber os 3 campos
             const response = await fetch('http://localhost:8081/api/auth/register', {
                 method: 'POST',
                 headers: {
@@ -18,7 +19,7 @@ function RegisterPage({ setRegisterMessage, registerMessage }) {
                 },
                 body: JSON.stringify({
                     username: username,
-                    email: email,
+                    email: email, // O campo de email já está sendo enviado corretamente
                     password: password
                 }),
             });
@@ -76,7 +77,7 @@ function RegisterPage({ setRegisterMessage, registerMessage }) {
             </div>
             <button type="submit">Registrar</button>
             {registerMessage && <p>{registerMessage}</p>}
-            <p>Já tem uma conta? <Link to="/login">Faça Login!</Link></p> {/* Usando Link */}
+            <p>Já tem uma conta? <Link to="/login">Faça Login!</Link></p>
         </form>
     );
 }
