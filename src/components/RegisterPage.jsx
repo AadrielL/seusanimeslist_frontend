@@ -1,84 +1,92 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Importar Link para navegação SPA
+import { Link } from 'react-router-dom';
+import axioConfig from '../axiosConfig'; // Usando o axioConfig para consistência
 
-function RegisterPage({ setRegisterMessage, registerMessage }) {
+function RegisterPage() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [registerMessage, setRegisterMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setLoading(true);
         setRegisterMessage('Registrando...');
 
         try {
-            // A API de registro do seu backend está configurada para receber os 3 campos
-            const response = await fetch('http://localhost:8081/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email, // O campo de email já está sendo enviado corretamente
-                    password: password
-                }),
-            });
-
-            if (response.ok) {
-                setRegisterMessage('Usuário registrado com sucesso!');
-                setUsername('');
-                setEmail('');
-                setPassword('');
-            } else {
-                const errorText = await response.text();
-                setRegisterMessage(`Erro ao registrar: ${errorText}`);
-            }
+            const response = await axioConfig.post('/api/auth/register', { username, email, password });
+            
+            setRegisterMessage('Usuário registrado com sucesso! Faça login.');
+            setUsername('');
+            setEmail('');
+            setPassword('');
         } catch (error) {
-            console.error('Erro na requisição de registro:', error);
-            setRegisterMessage('Erro de conexão. Verifique se o backend está rodando.');
+            console.error('Erro de registro:', error);
+            if (error.response && error.response.data && error.response.data.message) {
+                setRegisterMessage(`Erro: ${error.response.data.message}`);
+            } else {
+                setRegisterMessage('Erro ao registrar. Tente novamente mais tarde.');
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleRegister}>
+        <div className="auth-container">
             <h2>Registro de Usuário</h2>
-            <div>
-                <label>
-                    Usuário:
+            <form onSubmit={handleRegister}>
+                <div>
+                    <label htmlFor="username">Usuário:</label>
                     <input
                         type="text"
+                        id="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        placeholder="seu_usuario"
+                        disabled={loading}
                     />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Email:
+                </div>
+                <div>
+                    <label htmlFor="email">Email:</label>
                     <input
                         type="email"
+                        id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        placeholder="seuemail@exemplo.com"
+                        disabled={loading}
                     />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Senha:
+                </div>
+                <div>
+                    <label htmlFor="password">Senha:</label>
                     <input
                         type="password"
+                        id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        placeholder="********"
+                        disabled={loading}
                     />
-                </label>
-            </div>
-            <button type="submit">Registrar</button>
-            {registerMessage && <p>{registerMessage}</p>}
-            <p>Já tem uma conta? <Link to="/login">Faça Login!</Link></p>
-        </form>
+                </div>
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Registrando...' : 'Registrar'}
+                </button>
+            </form>
+
+            {registerMessage && <p className={`message ${registerMessage.includes('Erro') ? 'error' : 'success'}`}>{registerMessage}</p>}
+            
+            <p>
+                Já tem uma conta?{' '}
+                <Link to="/login">
+                    Faça Login!
+                </Link>
+            </p>
+        </div>
     );
 }
 

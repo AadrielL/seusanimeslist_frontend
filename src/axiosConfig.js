@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// A URL base do seu backend no Render
+const backendUrl = 'https://seusanimeslist-backendd2.onrender.com';
+
 const api = axios.create({
- baseURL: 'http://localhost:8081', // <--- Mude para isto!
+    baseURL: backendUrl,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -13,9 +16,6 @@ api.interceptors.request.use(
         const token = localStorage.getItem('jwtToken');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
-            console.log("Axios Interceptor: Adicionando cabeçalho Authorization com token.");
-        } else {
-            console.warn("Axios Interceptor: Token JWT não encontrado no localStorage.");
         }
         return config;
     },
@@ -29,11 +29,9 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            console.error("Axios Interceptor: 401 Unauthorized. Limpando token.");
             localStorage.removeItem('jwtToken');
             // Opcional: Você pode redirecionar o usuário para a página de login aqui
-            // window.location.href = '/login'; 
-            // so pra subir
+            // window.location.href = '/login
         }
         return Promise.reject(error);
     }

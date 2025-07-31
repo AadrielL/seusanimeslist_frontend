@@ -1,8 +1,7 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
-import RegisterPage from './components/RegisterPage'; // <<<<< Adicione esta linha
+import RegisterPage from './components/RegisterPage';
 import Dashboard from './components/Dashboard';
 import MyAnimeList from './components/MyAnimeList';
 import './index.css';
@@ -44,19 +43,14 @@ function App() {
     return (
         <div className="App">
             <Routes>
-                {/* A página de login */}
                 <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-                {/* A página de registro (agora incluída) */}
-                <Route path="/register" element={<RegisterPage />} /> {/* <<<<< Adicione esta linha */}
-                {/* Rota do Dashboard: a página inicial com busca e links */}
+                <Route path="/register" element={<RegisterPage />} />
                 <Route path="/dashboard" element={
                     jwtToken ? <Dashboard jwtToken={jwtToken} handleLogout={handleLogout} /> : <LoginPage onLogin={handleLogin} />
                 } />
-                {/* Rota para a sua lista pessoal de animes */}
                 <Route path="/my-animes" element={
                     jwtToken ? <MyAnimeList jwtToken={jwtToken} /> : <LoginPage onLogin={handleLogin} />
                 } />
-                {/* Rota padrão redireciona para login */}
                 <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
             </Routes>
         </div>
