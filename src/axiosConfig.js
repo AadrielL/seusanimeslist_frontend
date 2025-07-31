@@ -31,7 +31,7 @@ api.interceptors.response.use(
         if (error.response && error.response.status === 401) {
             localStorage.removeItem('jwtToken');
             // Opcional: Você pode redirecionar o usuário para a página de login aqui
-            // window.location.href = '/login'
+            // window.location.href = '/login
         }
         return Promise.reject(error);
     }
