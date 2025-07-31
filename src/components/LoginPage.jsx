@@ -3,7 +3,7 @@ import axioConfig from '../axiosConfig'; // Importe seu axiosConfig
 import { Link, useNavigate } from 'react-router-dom'; // Importe Link e useNavigate
 
 function LoginPage({ onLogin }) {
-    // CORREÇÃO: Mudei 'email' para 'username' (ou 'user', se for o que seu backend espera)
+    // CORREÇÃO: Mudei 'email' para 'username' (ouk 'user', se for o que seu backend espera)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState('');
