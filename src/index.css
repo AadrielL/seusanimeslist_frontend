@@ -695,7 +695,7 @@ p a {
         flex-direction: column;
     }
 }
-
+/* opa
 /* Estilos para Scrollbar (WebKit - Chrome, Safari) */
 ::-webkit-scrollbar {
     width: 12px;
