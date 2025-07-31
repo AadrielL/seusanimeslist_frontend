@@ -46,7 +46,7 @@ function LoginPage({ onLogin }) {
             setLoginMessage('Registro bem-sucedido! Faça login agora.');
             setUsername(''); // Limpa o campo após o registro
             setPassword('');
-            setIsRegistering(false); // Volta para o formulário de login
+            setIsRegistering(false); // Volta para o formulário de 
         } catch (error) {
             console.error('Erro de registro:', error);
             if (error.response && error.response.data && error.response.data.message) {
