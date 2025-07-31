@@ -7,7 +7,7 @@ const api = axios.create({
     },
 });
 
-// Interceptor para adicionar o token JWT a cada requisição
+// Interceptor para adicionar o token JWT a cada lll
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('jwtToken');
@@ -33,6 +33,7 @@ api.interceptors.response.use(
             localStorage.removeItem('jwtToken');
             // Opcional: Você pode redirecionar o usuário para a página de login aqui
             // window.location.href = '/login'; 
+            // so pra subir
         }
         return Promise.reject(error);
     }
