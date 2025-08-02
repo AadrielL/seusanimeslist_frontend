@@ -1,3 +1,4 @@
+// ARQUIVO: src/main/frontend/seusanimeslist/src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axioConfig from '../axiosConfig';
@@ -55,7 +56,7 @@ function Dashboard({ jwtToken, handleLogout }) {
         setGlobalMessage({ text: '', type: '' });
 
         const trimmedSearchTerm = searchTerm.trim();
-        const trimmedSearchCategory = searchCategory.trim(); // NOVO: Busca por categoria
+        const trimmedSearchCategory = searchCategory.trim();
 
         if (!trimmedSearchTerm && !trimmedSearchCategory) {
             fetchAllAnimes();
@@ -63,15 +64,23 @@ function Dashboard({ jwtToken, handleLogout }) {
         }
 
         let params = new URLSearchParams();
+        let searchType = '';
+        let searchValue = '';
 
-        if (trimmedSearchCategory) { // Priorizamos a busca por categoria se o campo não estiver vazio
+        if (trimmedSearchCategory) {
             params.append('categoria', trimmedSearchCategory);
-        } else { // Se não houver categoria, verifica título ou ano
+            searchType = 'categoria';
+            searchValue = trimmedSearchCategory;
+        } else {
             const yearNum = parseInt(trimmedSearchTerm, 10);
             if (!isNaN(yearNum) && trimmedSearchTerm.length === 4) {
                 params.append('ano', yearNum);
+                searchType = 'ano';
+                searchValue = trimmedSearchTerm;
             } else {
                 params.append('titulo', trimmedSearchTerm);
+                searchType = 'título';
+                searchValue = trimmedSearchTerm;
             }
         }
 
@@ -79,12 +88,8 @@ function Dashboard({ jwtToken, handleLogout }) {
             const response = await axioConfig.get(`/api/animes?${params.toString()}`);
             setAnimes(response.data);
             if (response.data.length > 0) {
-                const searchType = trimmedSearchCategory ? 'categoria' : (!isNaN(parseInt(trimmedSearchTerm, 10)) && trimmedSearchTerm.length === 4 ? 'ano' : 'título');
-                const searchValue = trimmedSearchCategory || trimmedSearchTerm;
                 setGlobalMessage({ text: `Busca por ${searchType} "${searchValue}" realizada com sucesso.`, type: 'success' });
             } else {
-                const searchType = trimmedSearchCategory ? 'categoria' : (!isNaN(parseInt(trimmedSearchTerm, 10)) && trimmedSearchTerm.length === 4 ? 'o ano' : 'o título');
-                const searchValue = trimmedSearchCategory || trimmedSearchTerm;
                 setGlobalMessage({ text: `Nenhum anime encontrado com ${searchType} "${searchValue}".`, type: 'info' });
             }
             console.log("Busca unificada realizada com sucesso:", response.data);
@@ -101,6 +106,7 @@ function Dashboard({ jwtToken, handleLogout }) {
         }
     };
 
+    // SUA LÓGICA CORRETA: O useEffect checa o token para carregar animes
     useEffect(() => {
         if (localStorage.getItem('jwtToken')) {
             fetchAllAnimes();
