@@ -1,3 +1,4 @@
+// ARQUIVO: src/main/frontend/seusanimeslist/src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axioConfig from '../axiosConfig';
@@ -7,8 +8,8 @@ function Dashboard({ jwtToken, handleLogout }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [globalMessage, setGlobalMessage] = useState({ text: '', type: '' });
-    const [searchTerm, setSearchTerm] = useState(''); // Este será o único campo de busca
-    // const [searchYear, setSearchYear] = useState(''); // REMOVIDO: Não precisamos mais de um estado separado para o ano
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchCategory, setSearchCategory] = useState(''); // NOVO: Estado para a busca por categoria
     const [expandedAnimeId, setExpandedAnimeId] = useState(null);
     const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
     const navigate = useNavigate();
@@ -46,7 +47,7 @@ function Dashboard({ jwtToken, handleLogout }) {
         }
     };
 
-    // NOVA FUNÇÃO: Busca Unificada por Título ou Ano
+    // FUNÇÃO: Busca Unificada por Título, Ano ou Categoria
     const handleUnifiedSearch = async (e) => {
         e.preventDefault();
         setExpandedAnimeId(null);
@@ -55,41 +56,49 @@ function Dashboard({ jwtToken, handleLogout }) {
         setGlobalMessage({ text: '', type: '' });
 
         const trimmedSearchTerm = searchTerm.trim();
+        const trimmedSearchCategory = searchCategory.trim();
 
-        if (!trimmedSearchTerm) {
-            // Se o campo estiver vazio, carrega todos os animes
+        if (!trimmedSearchTerm && !trimmedSearchCategory) {
             fetchAllAnimes();
             return;
         }
 
-        // Tenta converter o termo de busca para um número inteiro
-        const yearNum = parseInt(trimmedSearchTerm, 10);
         let params = new URLSearchParams();
-        let searchType = ''; // 'titulo' ou 'ano'
+        let searchType = '';
+        let searchValue = '';
 
-        if (!isNaN(yearNum) && trimmedSearchTerm.length === 4) { // Verifica se é um número e tem 4 dígitos (comum para anos)
-            params.append('ano', yearNum);
-            searchType = 'ano';
+        if (trimmedSearchCategory) {
+            params.append('categoria', trimmedSearchCategory);
+            searchType = 'categoria';
+            searchValue = trimmedSearchCategory;
         } else {
-            params.append('titulo', trimmedSearchTerm);
-            searchType = 'titulo';
+            const yearNum = parseInt(trimmedSearchTerm, 10);
+            if (!isNaN(yearNum) && trimmedSearchTerm.length === 4) {
+                params.append('ano', yearNum);
+                searchType = 'ano';
+                searchValue = trimmedSearchTerm;
+            } else {
+                params.append('titulo', trimmedSearchTerm);
+                searchType = 'título';
+                searchValue = trimmedSearchTerm;
+            }
         }
 
         try {
             const response = await axioConfig.get(`/api/animes?${params.toString()}`);
             setAnimes(response.data);
             if (response.data.length > 0) {
-                setGlobalMessage({ text: `Busca por ${searchType === 'titulo' ? 'título' : 'ano'} "${trimmedSearchTerm}" realizada com sucesso.`, type: 'success' });
+                setGlobalMessage({ text: `Busca por ${searchType} "${searchValue}" realizada com sucesso.`, type: 'success' });
             } else {
-                setGlobalMessage({ text: `Nenhum anime encontrado com ${searchType === 'titulo' ? 'o título' : 'o ano'} "${trimmedSearchTerm}".`, type: 'info' });
+                setGlobalMessage({ text: `Nenhum anime encontrado com ${searchType} "${searchValue}".`, type: 'info' });
             }
-            console.log(`Busca por ${searchType} realizada com sucesso:`, response.data);
+            console.log("Busca unificada realizada com sucesso:", response.data);
         } catch (err) {
-            console.error(`Erro na requisição de busca por ${searchType}:`, err);
+            console.error('Erro na requisição de busca unificada:', err);
             if (err.response && (err.response.status === 403 || err.response.status === 401)) {
                 setError('Acesso negado ou sessão expirada. Por favor, faça login novamente.');
             } else {
-                setError(`Erro ao buscar animes por ${searchType}. Verifique o backend ou sua conexão.`);
+                setError(`Erro ao buscar animes. Verifique o backend ou sua conexão.`);
             }
             setAnimes([]);
         } finally {
@@ -97,8 +106,7 @@ function Dashboard({ jwtToken, handleLogout }) {
         }
     };
 
-    // REMOVIDO: handleSearchByTitle e handleSearchByYear não são mais necessários
-
+    // SUA LÓGICA CORRETA: O useEffect checa o token para carregar animes
     useEffect(() => {
         if (localStorage.getItem('jwtToken')) {
             fetchAllAnimes();
@@ -127,7 +135,7 @@ function Dashboard({ jwtToken, handleLogout }) {
 
     const handleFormSubmitSuccess = async (animeId, status) => {
         try {
-            await axioConfig.post('/api/user-animes', { animeId, status }); 
+            await axioConfig.post('/api/user-animes', { animeId, status });
             setGlobalMessage({ text: 'Anime adicionado/atualizado na sua lista com sucesso!', type: 'success' });
             setExpandedAnimeId(null);
         } catch (err) {
@@ -151,13 +159,18 @@ function Dashboard({ jwtToken, handleLogout }) {
     return (
         <div className="app-container">
             <div className="header-fixed-container">
-                {/* NOVO: Formulário de Busca Unificada */}
                 <form onSubmit={handleUnifiedSearch} className="header-search-form">
                     <input
                         type="text"
                         placeholder="Buscar por título ou ano..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <input // NOVO: Campo de busca para categoria
+                        type="text"
+                        placeholder="Buscar por categoria..."
+                        value={searchCategory}
+                        onChange={(e) => setSearchCategory(e.target.value)}
                     />
                     <button type="submit">Buscar</button>
                 </form>
@@ -175,25 +188,12 @@ function Dashboard({ jwtToken, handleLogout }) {
             <div className="dashboard-content">
                 <h1>BEM-VINDO AO SEUSANIMELIST!</h1>
                 <p>Aqui você pode explorar animes, buscar e gerenciar sua lista pessoal.</p>
-                
+
                 <hr />
                 <h2>NAVEGAÇÃO RÁPIDA</h2>
                 <nav className="dashboard-nav">
                     <Link to="/my-animes" className="nav-button">Minha Lista de Animes</Link>
                 </nav>
-
-                <hr />
-                {/* REMOVIDO: Título "BUSCAR ANIMES" e o formulário de busca por ano */}
-                {/* <h2>BUSCAR ANIMES</h2> */} 
-                {/* <form onSubmit={handleSearchByYear} className="search-form">
-                    <input
-                        type="number"
-                        placeholder="Buscar anime por ano (ex: 2023)..."
-                        value={searchYear}
-                        onChange={(e) => setSearchYear(e.target.value)}
-                    />
-                    <button type="submit">Buscar por Ano</button>
-                </form> */}
 
                 <hr />
                 <h2>ANIMES DISPONÍVEIS (OU LANÇAMENTOS/POPULARES)</h2>
@@ -222,7 +222,7 @@ function Dashboard({ jwtToken, handleLogout }) {
                                     {anime.sinopse}
                                 </p>
                                 {expandedAnimeId === anime.id ? (
-                                    <div> 
+                                    <div>
                                         <select onChange={(e) => handleFormSubmitSuccess(anime.id, e.target.value)}>
                                             <option value="">Selecione um status</option>
                                             <option value="COMPLETED">ASSISTIDO</option>
