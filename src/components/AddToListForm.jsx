@@ -43,7 +43,7 @@ function LoginPage({ onLogin }) {
             // IMPORTANTE: VERIFIQUE NO SEU BACKEND QUAL É O ENDPOINT CORRETO PARA REGISTRO!
             const response = await axioConfig.post('/api/auth/register', { username, password });
             setLoginMessage('Registro bem-sucedido! Faça login agora.');
-            setUsername(''); // Limpa o campo após o registro
+            setUsername(''); // Limpa o campo após o registro.
             setPassword('');
             setIsRegistering(false); // Volta para o formulário de login
         } catch (error) {
