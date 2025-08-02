@@ -1,3 +1,5 @@
+// ARQUIVO: src/main/frontend/seusanimeslist/src/App.js
+
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
@@ -10,6 +12,16 @@ import axioConfig from './axiosConfig';
 function App() {
     const [jwtToken, setJwtToken] = useState(localStorage.getItem('jwtToken'));
     const navigate = useNavigate();
+
+    // NOVO: Este useEffect configura o token no cabeçalho do axios
+    // sempre que o estado 'jwtToken' muda.
+    useEffect(() => {
+        if (jwtToken) {
+            axioConfig.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
+        } else {
+            delete axioConfig.defaults.headers.common['Authorization'];
+        }
+    }, [jwtToken]);
 
     useEffect(() => {
         const interceptor = axioConfig.interceptors.response.use(
