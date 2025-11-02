@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axioConfig from '../axiosConfig';
+import useScrollDirection from '../hooks/useScrollDirection'; // 🛑 NOVO: Importa o Hook de rolagem
 
 function Dashboard({ jwtToken, handleLogout }) {
     const [animes, setAnimes] = useState([]);
@@ -8,16 +9,18 @@ function Dashboard({ jwtToken, handleLogout }) {
     const [error, setError] = useState(null);
     const [globalMessage, setGlobalMessage] = useState({ text: '', type: '' });
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchCategory, setSearchCategory] = useState('');
+    const [searchCategory, setSearchCategory] = useState(''); // Mantido, mas removido do layout fixo
     const [expandedAnimeId, setExpandedAnimeId] = useState(null);
     const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
+
+    const scrollDirection = useScrollDirection(); // Usa o Hook
+
     const navigate = useNavigate();
 
-    // 🌟 INÍCIO DAS MODIFICAÇÕES PARA PAGINAÇÃO 🌟
-    const [paginaAtual, setPaginaAtual] = useState(0); // Spring Boot Pageable começa em 0
+    // Paginação
+    const [paginaAtual, setPaginaAtual] = useState(0);
     const [totalPaginas, setTotalPaginas] = useState(0);
-    const tamanhoPagina = 20; // 20 cards por página, conforme o back-end
-    // 🌟 FIM DAS MODIFICAÇÕES PARA PAGINAÇÃO 🌟
+    const tamanhoPagina = 20;
 
     // Efeito para esconder a mensagem global após 3 segundos
     useEffect(() => {
@@ -30,19 +33,15 @@ function Dashboard({ jwtToken, handleLogout }) {
         }
     }, [globalMessage, error]);
 
-    // 🌟 FUNÇÃO MODIFICADA: fetchAllAnimes agora aceita um número de página 🌟
     const fetchAllAnimes = async (page = 0) => {
         setLoading(true);
         setError(null);
         setGlobalMessage({ text: '', type: '' });
         try {
-            // Adicionar os parâmetros de paginação na requisição
             const response = await axioConfig.get(`/api/animes?page=${page}&size=${tamanhoPagina}`);
-
-            // O Spring Data JPA retorna os dados em 'content' e os metadados em 'totalPages'
             setAnimes(response.data.content);
             setTotalPaginas(response.data.totalPages);
-            setPaginaAtual(page); // Atualiza o estado da página
+            setPaginaAtual(page);
 
             console.log("All animes loaded successfully:", response.data);
             if (response.data.content.length > 0) {
@@ -58,9 +57,7 @@ function Dashboard({ jwtToken, handleLogout }) {
             setLoading(false);
         }
     };
-    // 🌟 FIM DA FUNÇÃO MODIFICADA 🌟
 
-    // 🌟 FUNÇÃO MODIFICADA: Busca Unificada para Paginação 🌟
     const handleUnifiedSearch = async (e) => {
         e.preventDefault();
         setExpandedAnimeId(null);
@@ -69,10 +66,9 @@ function Dashboard({ jwtToken, handleLogout }) {
         setGlobalMessage({ text: '', type: '' });
 
         const trimmedSearchTerm = searchTerm.trim();
-        const trimmedSearchCategory = searchCategory.trim();
+        const trimmedSearchCategory = searchCategory.trim(); // Mantido para lógica
 
         if (!trimmedSearchTerm && !trimmedSearchCategory) {
-            // Se a busca estiver vazia, recarrega a primeira página
             fetchAllAnimes(0);
             return;
         }
@@ -81,6 +77,7 @@ function Dashboard({ jwtToken, handleLogout }) {
         let searchType = '';
         let searchValue = '';
 
+        // A lógica permanece a mesma para a busca, mesmo que o campo de categoria não esteja no header fixo
         if (trimmedSearchCategory) {
             params.append('categoria', trimmedSearchCategory);
             searchType = 'categoria';
@@ -98,17 +95,14 @@ function Dashboard({ jwtToken, handleLogout }) {
             }
         }
 
-        // Adicionar os parâmetros de paginação na busca. Sempre volta para a página 0.
         params.append('page', 0);
         params.append('size', tamanhoPagina);
 
         try {
             const response = await axioConfig.get(`/api/animes?${params.toString()}`);
-
-            // Atualiza os estados com a resposta paginada
             setAnimes(response.data.content);
             setTotalPaginas(response.data.totalPages);
-            setPaginaAtual(0); // Garante que volta para a primeira página de resultados de busca
+            setPaginaAtual(0);
 
             if (response.data.content.length > 0) {
                 setGlobalMessage({ text: `Busca por ${searchType} "${searchValue}" realizada com sucesso.`, type: 'success' });
@@ -128,12 +122,10 @@ function Dashboard({ jwtToken, handleLogout }) {
             setLoading(false);
         }
     };
-    // 🌟 FIM DA FUNÇÃO MODIFICADA 🌟
 
-    // 🌟 useEffect MODIFICADO (Chamada Inicial) 🌟
+    // useEffect para carregamento inicial e scroll to top
     useEffect(() => {
         if (localStorage.getItem('jwtToken')) {
-            // Chama a primeira página (0) ao iniciar
             fetchAllAnimes(0);
         } else {
             setError('Você precisa estar logado para ver os animes.');
@@ -152,7 +144,6 @@ function Dashboard({ jwtToken, handleLogout }) {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
-    // 🌟 FIM DO useEffect MODIFICADO 🌟
 
     const handleAddButtonClick = (animeId) => {
         setExpandedAnimeId(expandedAnimeId === animeId ? null : animeId);
@@ -182,26 +173,50 @@ function Dashboard({ jwtToken, handleLogout }) {
         });
     };
 
+    // 🛑 Lógica para a barra flutuante: Esconder se rolar para baixo e não estiver no topo.
+    const isFloatingNavHidden = scrollDirection === "down" && window.scrollY > 200;
+
+    // 🛑 FUNÇÃO PARA FORÇAR BUSCA VAZIA (Resetar Busca)
+    const handleResetSearch = () => {
+        setSearchTerm('');
+        setSearchCategory(''); // Também limpa a categoria em memória
+        fetchAllAnimes(0); // Recarrega a primeira página de todos os animes
+        setGlobalMessage({ text: 'Busca resetada. Exibindo todos os animes.', type: 'info' });
+    }
+
     return (
         <div className="app-container">
+            {/* 🛑 HEADER FIXO SUPERIOR - Contém Busca ÚNICA e Logout */}
             <div className="header-fixed-container">
                 <form onSubmit={handleUnifiedSearch} className="header-search-form">
+                    {/* Apenas um campo para Título ou Ano */}
                     <input
                         type="text"
-                        placeholder="Buscar por título ou ano..."
+                        placeholder="Buscar Título ou Ano..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Buscar por categoria..."
-                        value={searchCategory}
-                        onChange={(e) => setSearchCategory(e.target.value)}
                     />
                     <button type="submit">Buscar</button>
                 </form>
                 <button onClick={handleLogout} className="fixed-logout-button">LOGOUT</button>
             </div>
+
+            {/* 🛑 NOVO: BARRA DE NAVEGAÇÃO FLUTUANTE */}
+            <div className={`floating-nav-bar ${isFloatingNavHidden ? 'hidden' : ''}`}>
+                <button
+                    onClick={handleResetSearch}
+                    className="nav-button"
+                >
+                    Resetar Busca
+                </button>
+                <Link to="/my-animes" className="nav-button">
+                    Minha Lista
+                </Link>
+                <Link to="/add-anime" className="nav-button">
+                    Adicionar Novo Anime
+                </Link>
+            </div>
+
 
             {(globalMessage.text || error) && (
                 <div className="global-message-container">
@@ -217,8 +232,10 @@ function Dashboard({ jwtToken, handleLogout }) {
 
                 <hr />
                 <h2>NAVEGAÇÃO RÁPIDA</h2>
+                {/* Mantido aqui para referência, mas a barra flutuante é o novo menu principal */}
                 <nav className="dashboard-nav">
                     <Link to="/my-animes" className="nav-button">Minha Lista de Animes</Link>
+                    <Link to="/add-anime" className="nav-button">Adicionar Novo Anime</Link>
                 </nav>
 
                 <hr />
@@ -272,7 +289,7 @@ function Dashboard({ jwtToken, handleLogout }) {
                             ))}
                         </div>
 
-                        {/* 🌟 NOVOS CONTROLES DE PAGINAÇÃO 🌟 */}
+                        {/* Controles de Paginação */}
                         <div className="pagination-controls" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '30px 0', gap: '20px' }}>
                             <button
                                 onClick={() => fetchAllAnimes(paginaAtual - 1)}
@@ -294,7 +311,6 @@ function Dashboard({ jwtToken, handleLogout }) {
                                 Próxima Página &rarr;
                             </button>
                         </div>
-                        {/* 🌟 FIM DOS CONTROLES DE PAGINAÇÃO 🌟 */}
                     </>
                 )}
             </div>

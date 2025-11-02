@@ -39,10 +39,9 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    /* 💡 MOBILE-FIRST: Menos padding nas bordas */
     padding: var(--spacing-sm);
     box-sizing: border-box;
-    width: 100%; /* Garantir que ocupe a largura total */
+    width: 100%;
 }
 
 h1, h2, h3 {
@@ -50,7 +49,6 @@ h1, h2, h3 {
     text-align: center;
     margin-bottom: var(--spacing-md);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    /* 💡 MOBILE-FIRST: Reduzir tamanho de fonte em telas pequenas */
     font-size: 1.8rem;
 }
 
@@ -187,7 +185,7 @@ p a {
     box-shadow: var(--box-shadow);
     max-width: 500px;
     width: 100%;
-    margin: var(--spacing-md) auto; /* Ajuste para mobile */
+    margin: var(--spacing-md) auto;
     text-align: center;
     box-sizing: border-box;
 }
@@ -196,14 +194,13 @@ p a {
     margin-top: var(--spacing-md);
 }
 
-/* Mensagens Globais e de Formulário (Padronizado) */
+/* Mensagens Globais e de Formulário */
 .global-message-container {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-bottom: var(--spacing-md);
     z-index: 1000;
-    /* 💡 Ajuste de posição para não colidir com o cabeçalho fixo */
     margin-top: 60px;
 }
 
@@ -247,8 +244,8 @@ p a {
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-md);
-    /* 💡 Offset para o cabeçalho fixo em telas pequenas */
-    padding-top: 100px;
+    /* Aumenta o padding top para acomodar o header fixo e a barra flutuante */
+    padding-top: 150px;
 }
 
 .dashboard-nav {
@@ -257,7 +254,7 @@ p a {
     margin-top: var(--spacing-md);
     flex-wrap: wrap;
     justify-content: center;
-    width: 100%; /* Permite que os botões se ajustem */
+    width: 100%;
 }
 
 .nav-button {
@@ -268,7 +265,7 @@ p a {
     text-decoration: none;
     transition: background-color 0.3s ease;
     white-space: nowrap;
-    flex-grow: 1; /* Permite que ocupe espaço se houver mais de um */
+    flex-grow: 1;
     text-align: center;
     min-width: 150px;
 }
@@ -280,25 +277,28 @@ p a {
 /* 🛑 Contêiner para elementos fixos do cabeçalho */
 .header-fixed-container {
     position: fixed;
-    top: 0; /* Fixa no topo para melhor uso do espaço em mobile */
+    top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
     background-color: var(--primary-bg-color);
     box-shadow: var(--box-shadow);
-    /* 💡 MOBILE-FIRST: Layout empilhado (busca em cima, logout embaixo ou do lado) */
+    /* MOBILE-FIRST: Coloca busca e logout lado a lado em telas pequenas */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* Espaço entre busca e logout */
     padding: var(--spacing-sm);
     gap: var(--spacing-sm);
     box-sizing: border-box;
 }
 
-/* Ajustes para o botão de logout fixo (dentro do novo contêiner) */
+/* Ajustes para o botão de logout fixo */
 .fixed-logout-button {
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: 0.9rem;
-    width: 100%; /* Ocupa a largura total para fácil clique */
+    width: auto;
+    flex-shrink: 0; /* Impede que seja esmagado */
 }
 
 /* Estilo para a barra de busca no cabeçalho */
@@ -306,10 +306,10 @@ p a {
     background-color: var(--secondary-bg-color);
     padding: var(--spacing-xs);
     border-radius: var(--border-radius-sm);
-    box-shadow: none; /* Não precisa de sombra dentro de um container sombreado */
+    box-shadow: none;
     display: flex;
-    flex-direction: column; /* 💡 MOBILE-FIRST: Campos de busca empilhados */
-    align-items: stretch; /* Estica os campos */
+    flex-direction: row;
+    align-items: center;
     gap: var(--spacing-xs);
     width: 100%;
     max-width: none;
@@ -319,20 +319,20 @@ p a {
     padding: var(--spacing-xs);
     font-size: 0.85rem;
     flex-grow: 1;
+    min-width: 100px;
 }
 
 .header-search-form button {
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: 0.85rem;
     white-space: nowrap;
-    width: 100%;
+    width: auto;
 }
 
 
 /* Cards de Anime */
 .anime-cards-grid {
     display: grid;
-    /* 💡 MOBILE-FIRST: Começa com 1 coluna */
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
     width: 100%;
@@ -368,7 +368,6 @@ p a {
     font-size: 1.2rem;
     margin-top: 0;
     margin-bottom: var(--spacing-xs);
-    /* 💡 Removeu nowrap/ellipsis para telas pequenas, permitindo quebra */
     word-break: break-word;
     width: 100%;
 }
@@ -397,7 +396,7 @@ p a {
     margin-top: var(--spacing-sm);
 }
 
-/* Destaque de Status (nas cards) - (Sem alterações) */
+/* Destaque de Status (nas cards) */
 .anime-status-highlight {
     font-weight: bold;
     padding: 2px 8px;
@@ -428,12 +427,11 @@ p a {
 }
 
 /* Botões Fixos e Navegação */
-/* 💡 Posicionamento fixo ajustado para telas menores */
 .fixed-back-button {
     position: fixed;
     top: var(--spacing-sm);
     left: var(--spacing-sm);
-    z-index: 1001; /* Z-index maior para ficar acima do header */
+    z-index: 1001;
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: 0.9rem;
     background-color: var(--card-bg-color);
@@ -461,29 +459,9 @@ p a {
     z-index: 999;
 }
 
-/* Minha Lista de Animes */
-.my-anime-list-container {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-.my-anime-list-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: var(--spacing-md);
-}
-
+/* Minha Lista de Animes (outras regras de lista...) */
 .sort-by-status-container {
     display: flex;
-    /* 💡 MOBILE-FIRST: Empilha controles */
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-sm);
@@ -492,31 +470,11 @@ p a {
 }
 
 .sort-by-status-container select {
-    max-width: 300px; /* Ajuste o máximo para mobile */
+    max-width: 300px;
     width: 100%;
 }
 
-/* Contadores de Status */
-.status-counters-display {
-    background-color: var(--secondary-bg-color);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--box-shadow);
-    width: 100%;
-    max-width: 800px;
-    margin-top: var(--spacing-md);
-    text-align: center;
-    box-sizing: border-box;
-}
-
-.status-badges-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-sm);
-}
-
+/* Contadores de Status (outras regras de badges...) */
 .status-counter-badge {
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--border-radius-sm);
@@ -525,37 +483,16 @@ p a {
     white-space: nowrap;
 }
 
-/* Cores para badges (mesmas do destaque de status) - (Sem alterações) */
-.status-counter-badge.completed {
-    background-color: var(--success-color);
-    color: white;
-}
-.status-counter-badge.watching {
-    background-color: var(--info-color);
-    color: white;
-}
-.status-counter-badge.plan-to-watch {
-    background-color: #ffc107;
-    color: #333;
-}
-.status-counter-badge.on-hold {
-    background-color: #6c757d;
-    color: white;
-}
-.status-counter-badge.dropped {
-    background-color: var(--error-color);
-    color: white;
-}
-
 /* ========================================================================= */
-/* --- NOVO: BARRA DE NAVEGAÇÃO FLUTUANTE/STICKY --- */
+/* --- BARRA DE NAVEGAÇÃO FLUTUANTE/STICKY (Corrigido) --- */
 /* ========================================================================= */
 .floating-nav-bar {
     position: fixed;
-    top: 75px; /* Posição inicial: Abaixo do cabeçalho fixo (aproximado no desktop) */
+    /* Posição após o header fixo (desktop) */
+    top: 60px;
     left: 0;
     width: 100%;
-    z-index: 990; /* Abaixo do header (1000) e acima do resto */
+    z-index: 990;
     background-color: var(--secondary-bg-color);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     padding: var(--spacing-sm) var(--spacing-md);
@@ -565,17 +502,16 @@ p a {
     gap: var(--spacing-md);
     flex-wrap: wrap;
 
-    /* Transição para suavizar o efeito de aparecer/sumir do React */
+    /* Transição para o efeito de esconder/mostrar */
     transition: transform 0.3s ease-in-out;
 }
 
-/* Estilo para quando a barra estiver escondida (controlado pelo React) */
+/* A CLASSE que esconde a barra */
 .floating-nav-bar.hidden {
-    /* Move a barra para cima, escondendo-a */
+    /* Empurra a barra totalmente para fora da tela, acima do topo */
     transform: translateY(-150px);
 }
 
-/* Estilo dos botões dentro desta barra (reaproveitando o nav-button) */
 .floating-nav-bar .nav-button {
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: 0.95rem;
@@ -584,33 +520,25 @@ p a {
 }
 
 /* ========================================================================= */
-/* --- MEDIA QUERIES PARA RESPONSIVIDADE --- */
+/* --- MEDIA QUERIES PARA RESPONSIVIDADE (Corrigido) --- */
 /* ========================================================================= */
 
-/* Tablet em Modo Retrato e Celulares Grandes (max-width: 1023px) */
-@media (max-width: 1023px) {
-    /* Navbar/Header fixo */
-    .header-fixed-container {
-        flex-direction: column; /* Força busca e logout a empilhar */
-    }
-
-    .header-search-form {
-        flex-direction: row; /* Coloca os campos de busca lado a lado no tablet */
-    }
-
-    /* Cards */
-    .anime-cards-grid {
-        /* Tablet: 2 Colunas */
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Mobile - Ajuste do floating nav bar */
+/* Mobile e Tablet Retrato (max-width: 767px) */
 @media (max-width: 767px) {
-    .floating-nav-bar {
-        /* 135px é a altura aproximada do header expandido no mobile */
-        top: 135px;
+    .header-fixed-container {
+        /* Garante que ocupe a largura total */
+        width: 100%;
         padding: var(--spacing-sm);
+    }
+
+    .dashboard-content {
+        /* Ajusta o padding top para acomodar o header fixo e a barra flutuante no mobile */
+        padding-top: 150px;
+    }
+
+    .floating-nav-bar {
+        /* Ajusta a posição no mobile para ficar abaixo do header fixo (aprox. 55px) */
+        top: 55px;
     }
 }
 
@@ -638,9 +566,10 @@ p a {
         justify-content: flex-end;
         padding: var(--spacing-sm) var(--spacing-lg);
         align-items: center;
+        gap: var(--spacing-md); /* Espaçamento entre busca e logout */
     }
 
-    /* 🛑 Ajuste do botão de volta para não colidir com o header */
+    /* Reposiciona o botão de voltar */
     .fixed-back-button {
         top: var(--spacing-lg);
         left: var(--spacing-lg);
@@ -655,18 +584,29 @@ p a {
         left: 0;
     }
 
-    /* 🛑 CORREÇÃO PRINCIPAL DA BUSCA */
+    /* 🛑 Posição do floating nav no desktop, abaixo do header (60px) */
+    .floating-nav-bar {
+        top: 60px;
+        padding: var(--spacing-sm) var(--spacing-lg);
+    }
+
+
+    /* 🛑 Ajuste da Busca */
     .header-search-form {
         flex-direction: row;
-        max-width: 350px; /* LIMITA A LARGURA MÁXIMA */
+        max-width: 300px;
         width: auto;
     }
 
     /* 🛑 Garante que o botão de logout não seja esmagado */
     .fixed-logout-button {
         width: auto;
-        margin-left: var(--spacing-md);
         flex-shrink: 0;
+    }
+
+    /* Cards: 2 Colunas no tablet/desktop médio */
+    .anime-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     /* Controles da Minha Lista */
@@ -688,9 +628,7 @@ p a {
     }
 }
 
-/* ========================================================================= */
-/* --- SCROLLBAR --- */
-/* ========================================================================= */
+/* SCROLLBAR */
 ::-webkit-scrollbar {
     width: 12px;
 }
