@@ -1,4 +1,4 @@
-// src/components/useScrollDirection.js (ou .jsx)
+src/components/useScrollDirection.jsx
 import { useState, useEffect } from 'react';
 
 const useScrollDirection = () => {
