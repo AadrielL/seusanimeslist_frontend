@@ -1,4 +1,3 @@
-src/components/useScrollDirection.jsx
 import { useState, useEffect } from 'react';
 
 const useScrollDirection = () => {
@@ -20,14 +19,15 @@ const useScrollDirection = () => {
             setLastScrollY(scrollY > 0 ? scrollY : 0);
         };
 
+        // Usa requestAnimationFrame para otimizar o desempenho do scroll
         const onScroll = () => window.requestAnimationFrame(updateScrollDir);
         window.addEventListener("scroll", onScroll);
+
+        // Função de limpeza
         return () => window.removeEventListener("scroll", onScroll);
     }, [lastScrollY, scrollDir]);
 
     return scrollDir;
 };
 
-// 🛑 ADICIONE ESTA LINHA:
 export default useScrollDirection;
-"a"
