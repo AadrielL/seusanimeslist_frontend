@@ -1,654 +1,711 @@
 :root {
-        --primary-bg-color: #1a1a2e; /* Azul escuro principal */
-        --secondary-bg-color: #16213e; /* Azul escuro um pouco mais claro */
-        --card-bg-color: #0f3460; /* Azul médio para cards */
-        --text-color: #e0e0e0; /* Cinza claro para texto */
-        --highlight-color: #e94560; /* Vermelho/Rosa para destaque */
-        --accent-color: #e94560; /* Cor de acento (botões, links) */
-        --success-color: #28a745; /* Verde para sucesso */
-        --error-color: #dc3545; /* Vermelho para erro */
-        --info-color: #007bff; /* Azul para informação */
+    --primary-bg-color: #1a1a2e; /* Azul escuro principal */
+    --secondary-bg-color: #16213e; /* Azul escuro um pouco mais claro */
+    --card-bg-color: #0f3460; /* Azul médio para cards */
+    --text-color: #e0e0e0; /* Cinza claro para texto */
+    --highlight-color: #e94560; /* Vermelho/Rosa para destaque */
+    --accent-color: #e94560; /* Cor de acento (botões, links) */
+    --success-color: #28a745; /* Verde para sucesso */
+    --error-color: #dc3545; /* Vermelho para erro */
+    --info-color: #007bff; /* Azul para informação */
 
-        /* Espaçamento */
-        --spacing-xs: 5px;
-        --spacing-sm: 10px;
-        --spacing-md: 20px;
-        --spacing-lg: 30px;
-        --spacing-xl: 50px;
+    /* Espaçamento */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 50px;
 
-        /* Bordas */
-        --border-radius-sm: 4px;
-        --border-radius-md: 8px;
+    /* Bordas */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
 
-        /* Sombras */
-        --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    /* Sombras */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Base e Layout */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-y: scroll;
+}
+
+#root, .app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    /* 💡 MOBILE-FIRST: Menos padding nas bordas */
+    padding: var(--spacing-sm);
+    box-sizing: border-box;
+    width: 100%; /* Garantir que ocupe a largura total */
+}
+
+h1, h2, h3 {
+    color: var(--highlight-color);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* 💡 MOBILE-FIRST: Reduzir tamanho de fonte em telas pequenas */
+    font-size: 1.8rem;
+}
+
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.3rem; }
+
+h4 {
+    color: var(--accent-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--card-bg-color);
+    margin: var(--spacing-lg) 0;
+    width: 100%;
+}
+
+/* Formulários e Inputs */
+form {
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: var(--spacing-md);
+    box-sizing: border-box;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+label {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--card-bg-color);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(224, 224, 224, 0.5);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.5);
+}
+
+select option {
+    background-color: var(--primary-bg-color);
+    color: var(--text-color);
+}
+
+/* Botões */
+button {
+    background-color: var(--accent-color);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+button:hover {
+    background-color: #c93a52;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+}
+
+/* Links */
+a {
+    color: var(--highlight-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #ff6b81;
+    text-decoration: underline;
+}
+
+p a {
+    font-weight: bold;
+}
+
+/* Contêiner de Autenticação */
+.auth-container {
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    max-width: 500px;
+    width: 100%;
+    margin: var(--spacing-md) auto; /* Ajuste para mobile */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.auth-container p {
+    margin-top: var(--spacing-md);
+}
+
+/* Mensagens Globais e de Formulário (Padronizado) */
+.global-message-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+    z-index: 1000;
+    /* 💡 Ajuste de posição para não colidir com o cabeçalho fixo */
+    margin-top: 60px;
+}
+
+.global-message {
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    font-weight: bold;
+    width: fit-content;
+    max-width: 90%;
+    box-sizing: border-box;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.global-message.success {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.global-message.error {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+}
+
+.global-message.info {
+    background-color: rgba(0, 123, 255, 0.2);
+    color: var(--info-color);
+    border: 1px solid var(--info-color);
+}
+
+/* Dashboard */
+.dashboard-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    /* 💡 Offset para o cabeçalho fixo em telas pequenas */
+    padding-top: 100px;
+}
+
+.dashboard-nav {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%; /* Permite que os botões se ajustem */
+}
+
+.nav-button {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    flex-grow: 1; /* Permite que ocupe espaço se houver mais de um */
+    text-align: center;
+    min-width: 150px;
+}
+
+.nav-button:hover {
+    background-color: #1a4d80;
+}
+
+/* 🛑 Contêiner para elementos fixos do cabeçalho */
+.header-fixed-container {
+    position: fixed;
+    top: 0; /* Fixa no topo para melhor uso do espaço em mobile */
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--primary-bg-color);
+    box-shadow: var(--box-shadow);
+    /* 💡 MOBILE-FIRST: Layout empilhado (busca em cima, logout embaixo ou do lado) */
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+    box-sizing: border-box;
+}
+
+/* Ajustes para o botão de logout fixo (dentro do novo contêiner) */
+.fixed-logout-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+    width: 100%; /* Ocupa a largura total para fácil clique */
+}
+
+/* Estilo para a barra de busca no cabeçalho */
+.header-search-form {
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    box-shadow: none; /* Não precisa de sombra dentro de um container sombreado */
+    display: flex;
+    flex-direction: column; /* 💡 MOBILE-FIRST: Campos de busca empilhados */
+    align-items: stretch; /* Estica os campos */
+    gap: var(--spacing-xs);
+    width: 100%;
+    max-width: none;
+}
+
+.header-search-form input {
+    padding: var(--spacing-xs);
+    font-size: 0.85rem;
+    flex-grow: 1;
+}
+
+.header-search-form button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    width: 100%;
+}
+
+
+/* Cards de Anime */
+.anime-cards-grid {
+    display: grid;
+    /* 💡 MOBILE-FIRST: Começa com 1 coluna */
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    width: 100%;
+    padding-top: var(--spacing-md);
+}
+
+.anime-card {
+    background-color: var(--card-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+.anime-card .anime-cover {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.anime-card .anime-title {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
+    /* 💡 Removeu nowrap/ellipsis para telas pequenas, permitindo quebra */
+    word-break: break-word;
+    width: 100%;
+}
+
+.anime-card .anime-genre {
+    font-size: 0.9rem;
+    color: rgba(224, 224, 224, 0.7);
+    margin-bottom: var(--spacing-xs);
+}
+
+.anime-card .anime-description {
+    font-size: 0.85rem;
+    text-align: left;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: var(--spacing-sm);
+    flex-grow: 1;
+}
+
+.anime-card .add-to-list-button {
+    width: 100%;
+    margin-top: var(--spacing-sm);
+}
+
+/* Destaque de Status (nas cards) - (Sem alterações) */
+.anime-status-highlight {
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.anime-status-highlight.completed {
+    background-color: var(--success-color);
+    color: white;
+}
+.anime-status-highlight.watching {
+    background-color: var(--info-color);
+    color: white;
+}
+.anime-status-highlight.plan-to-watch {
+    background-color: #ffc107;
+    color: #333;
+}
+.anime-status-highlight.on-hold {
+    background-color: #6c757d;
+    color: white;
+}
+.anime-status-highlight.dropped {
+    background-color: var(--error-color);
+    color: white;
+}
+
+/* Botões Fixos e Navegação */
+/* 💡 Posicionamento fixo ajustado para telas menores */
+.fixed-back-button {
+    position: fixed;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    z-index: 1001; /* Z-index maior para ficar acima do header */
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+    background-color: var(--card-bg-color);
+    box-shadow: var(--box-shadow);
+}
+
+.fixed-back-button:hover {
+    background-color: #1a4d80;
+}
+
+.scroll-to-top-button {
+    position: fixed;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--box-shadow);
+    z-index: 999;
+}
+
+/* Minha Lista de Animes */
+.my-anime-list-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.my-anime-list-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: var(--spacing-md);
+}
+
+.sort-by-status-container {
+    display: flex;
+    /* 💡 MOBILE-FIRST: Empilha controles */
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    justify-content: center;
+}
+
+.sort-by-status-container select {
+    max-width: 300px; /* Ajuste o máximo para mobile */
+    width: 100%;
+}
+
+/* Contadores de Status */
+.status-counters-display {
+    background-color: var(--secondary-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 800px;
+    margin-top: var(--spacing-md);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.status-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.status-counter-badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-weight: bold;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Cores para badges (mesmas do destaque de status) - (Sem alterações) */
+.status-counter-badge.completed {
+    background-color: var(--success-color);
+    color: white;
+}
+.status-counter-badge.watching {
+    background-color: var(--info-color);
+    color: white;
+}
+.status-counter-badge.plan-to-watch {
+    background-color: #ffc107;
+    color: #333;
+}
+.status-counter-badge.on-hold {
+    background-color: #6c757d;
+    color: white;
+}
+.status-counter-badge.dropped {
+    background-color: var(--error-color);
+    color: white;
+}
+
+/* ========================================================================= */
+/* --- NOVO: BARRA DE NAVEGAÇÃO FLUTUANTE/STICKY --- */
+/* ========================================================================= */
+.floating-nav-bar {
+    position: fixed;
+    top: 75px; /* Posição inicial: Abaixo do cabeçalho fixo (aproximado no desktop) */
+    left: 0;
+    width: 100%;
+    z-index: 990; /* Abaixo do header (1000) e acima do resto */
+    background-color: var(--secondary-bg-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    padding: var(--spacing-sm) var(--spacing-md);
+
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+
+    /* Transição para suavizar o efeito de aparecer/sumir do React */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Estilo para quando a barra estiver escondida (controlado pelo React) */
+.floating-nav-bar.hidden {
+    /* Move a barra para cima, escondendo-a */
+    transform: translateY(-150px);
+}
+
+/* Estilo dos botões dentro desta barra (reaproveitando o nav-button) */
+.floating-nav-bar .nav-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.95rem;
+    flex-grow: 0;
+    min-width: 120px;
+}
+
+/* ========================================================================= */
+/* --- MEDIA QUERIES PARA RESPONSIVIDADE --- */
+/* ========================================================================= */
+
+/* Tablet em Modo Retrato e Celulares Grandes (max-width: 1023px) */
+@media (max-width: 1023px) {
+    /* Navbar/Header fixo */
+    .header-fixed-container {
+        flex-direction: column; /* Força busca e logout a empilhar */
     }
 
-    /* Base e Layout */
-    body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        background-color: var(--primary-bg-color);
-        color: var(--text-color);
-        line-height: 1.6;
-        overflow-y: scroll;
+    .header-search-form {
+        flex-direction: row; /* Coloca os campos de busca lado a lado no tablet */
     }
 
+    /* Cards */
+    .anime-cards-grid {
+        /* Tablet: 2 Colunas */
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile - Ajuste do floating nav bar */
+@media (max-width: 767px) {
+    .floating-nav-bar {
+        /* 135px é a altura aproximada do header expandido no mobile */
+        top: 135px;
+        padding: var(--spacing-sm);
+    }
+}
+
+
+/* Tablet e Desktop Médio (min-width: 768px) */
+@media (min-width: 768px) {
+    /* Geral: Mais padding nas bordas */
     #root, .app-container {
-        display: flex;
-        flex-direction: column;
+        padding: var(--spacing-lg);
+    }
+
+    /* Cabeçalhos maiores */
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+
+    /* Dashboard: Remove o offset de padding superior */
+    .dashboard-content {
+        padding-top: 20px;
+    }
+
+    /* 🛑 CORREÇÃO NO CONTAINER FIXO (Desktop/Tablet) */
+    .header-fixed-container {
+        flex-direction: row;
+        justify-content: flex-end;
+        padding: var(--spacing-sm) var(--spacing-lg);
         align-items: center;
-        min-height: 100vh;
-        /* 💡 MOBILE-FIRST: Menos padding nas bordas */
-        padding: var(--spacing-sm);
-        box-sizing: border-box;
-        width: 100%; /* Garantir que ocupe a largura total */
     }
 
-    h1, h2, h3 {
-        color: var(--highlight-color);
-        text-align: center;
-        margin-bottom: var(--spacing-md);
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        /* 💡 MOBILE-FIRST: Reduzir tamanho de fonte em telas pequenas */
-        font-size: 1.8rem;
+    /* 🛑 Ajuste do botão de volta para não colidir com o header */
+    .fixed-back-button {
+        top: var(--spacing-lg);
+        left: var(--spacing-lg);
     }
 
-    h2 { font-size: 1.5rem; }
-    h3 { font-size: 1.3rem; }
-
-    h4 {
-        color: var(--accent-color);
-        margin-bottom: var(--spacing-sm);
-    }
-
-    p {
-        margin-bottom: var(--spacing-sm);
-        text-align: center;
-    }
-
-    hr {
-        border: none;
-        border-top: 1px solid var(--card-bg-color);
-        margin: var(--spacing-lg) 0;
+    /* Centraliza a mensagem global sem ser afetada pelo header */
+    .global-message-container {
+        margin-top: 0;
+        top: 80px;
+        position: fixed;
         width: 100%;
+        left: 0;
     }
 
-    /* Formulários e Inputs */
-    form {
-        background-color: var(--secondary-bg-color);
-        padding: var(--spacing-md);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--box-shadow);
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-md);
-        width: 100%;
-        max-width: 400px;
-        margin-bottom: var(--spacing-md);
-        box-sizing: border-box;
+    /* 🛑 CORREÇÃO PRINCIPAL DA BUSCA */
+    .header-search-form {
+        flex-direction: row;
+        max-width: 350px; /* LIMITA A LARGURA MÁXIMA */
+        width: auto;
     }
 
-    form div {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-xs);
-    }
-
-    label {
-        font-weight: bold;
-        color: var(--text-color);
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="number"],
-    select,
-    textarea {
-        padding: var(--spacing-sm);
-        border: 1px solid var(--card-bg-color);
-        border-radius: var(--border-radius-sm);
-        background-color: var(--primary-bg-color);
-        color: var(--text-color);
-        font-size: 1rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-        color: rgba(224, 224, 224, 0.5);
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-        outline: none;
-        border-color: var(--highlight-color);
-        box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.5);
-    }
-
-    select option {
-        background-color: var(--primary-bg-color);
-        color: var(--text-color);
-    }
-
-    /* Botões */
-    button {
-        background-color: var(--accent-color);
-        color: white;
-        padding: var(--spacing-sm) var(--spacing-md);
-        border: none;
-        border-radius: var(--border-radius-sm);
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+    /* 🛑 Garante que o botão de logout não seja esmagado */
+    .fixed-logout-button {
+        width: auto;
+        margin-left: var(--spacing-md);
         flex-shrink: 0;
     }
 
-    button:hover {
-        background-color: #c93a52;
-        transform: translateY(-2px);
-    }
-
-    button:active {
-        transform: translateY(0);
-    }
-
-    button:disabled {
-        background-color: #6c757d;
-        cursor: not-allowed;
-        opacity: 0.7;
-        transform: none;
-    }
-
-    /* Links */
-    a {
-        color: var(--highlight-color);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    a:hover {
-        color: #ff6b81;
-        text-decoration: underline;
-    }
-
-    p a {
-        font-weight: bold;
-    }
-
-    /* Contêiner de Autenticação */
-    .auth-container {
-        background-color: var(--secondary-bg-color);
-        padding: var(--spacing-lg);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--box-shadow);
-        max-width: 500px;
-        width: 100%;
-        margin: var(--spacing-md) auto; /* Ajuste para mobile */
-        text-align: center;
-        box-sizing: border-box;
-    }
-
-    .auth-container p {
-        margin-top: var(--spacing-md);
-    }
-
-    /* Mensagens Globais e de Formulário (Padronizado) */
-    .global-message-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        margin-bottom: var(--spacing-md);
-        z-index: 1000;
-        /* 💡 Ajuste de posição para não colidir com o cabeçalho fixo */
-        margin-top: 60px;
-    }
-
-    .global-message {
-        padding: var(--spacing-sm);
-        border-radius: var(--border-radius-sm);
-        text-align: center;
-        font-weight: bold;
-        width: fit-content;
-        max-width: 90%;
-        box-sizing: border-box;
-        box-shadow: var(--box-shadow);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .global-message.success {
-        background-color: rgba(40, 167, 69, 0.2);
-        color: var(--success-color);
-        border: 1px solid var(--success-color);
-    }
-
-    .global-message.error {
-        background-color: rgba(220, 53, 69, 0.2);
-        color: var(--error-color);
-        border: 1px solid var(--error-color);
-    }
-
-    .global-message.info {
-        background-color: rgba(0, 123, 255, 0.2);
-        color: var(--info-color);
-        border: 1px solid var(--info-color);
-    }
-
-    /* Dashboard */
-    .dashboard-content {
-        width: 100%;
-        max-width: 1200px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-md);
-        /* 💡 Offset para o cabeçalho fixo em telas pequenas */
-        padding-top: 100px;
-    }
-
-    .dashboard-nav {
-        display: flex;
-        gap: var(--spacing-md);
-        margin-top: var(--spacing-md);
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%; /* Permite que os botões se ajustem */
-    }
-
-    .nav-button {
-        background-color: var(--card-bg-color);
-        color: var(--text-color);
-        padding: var(--spacing-sm) var(--spacing-md);
-        border-radius: var(--border-radius-sm);
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-        white-space: nowrap;
-        flex-grow: 1; /* Permite que ocupe espaço se houver mais de um */
-        text-align: center;
-        min-width: 150px;
-    }
-
-    .nav-button:hover {
-        background-color: #1a4d80;
-    }
-
-    /* 🛑 NOVO: Contêiner para elementos fixos do cabeçalho */
-    .header-fixed-container {
-        position: fixed;
-        top: 0; /* Fixa no topo para melhor uso do espaço em mobile */
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        background-color: var(--primary-bg-color);
-        box-shadow: var(--box-shadow);
-        /* 💡 MOBILE-FIRST: Layout empilhado (busca em cima, logout embaixo ou do lado) */
-        display: flex;
-        flex-direction: column;
-        padding: var(--spacing-sm);
-        gap: var(--spacing-sm);
-        box-sizing: border-box;
-    }
-
-    /* Ajustes para o botão de logout fixo (dentro do novo contêiner) */
-    .fixed-logout-button {
-        padding: var(--spacing-xs) var(--spacing-sm);
-        font-size: 0.9rem;
-        width: 100%; /* Ocupa a largura total para fácil clique */
-    }
-
-    /* NOVO: Estilo para a barra de busca no cabeçalho */
-    .header-search-form {
-        background-color: var(--secondary-bg-color);
-        padding: var(--spacing-xs);
-        border-radius: var(--border-radius-sm);
-        box-shadow: none; /* Não precisa de sombra dentro de um container sombreado */
-        display: flex;
-        flex-direction: column; /* 💡 MOBILE-FIRST: Campos de busca empilhados */
-        align-items: stretch; /* Estica os campos */
-        gap: var(--spacing-xs);
-        width: 100%;
-        max-width: none;
-    }
-
-    .header-search-form input {
-        padding: var(--spacing-xs);
-        font-size: 0.85rem;
-        flex-grow: 1;
-    }
-
-    .header-search-form button {
-        padding: var(--spacing-xs) var(--spacing-sm);
-        font-size: 0.85rem;
-        white-space: nowrap;
-        width: 100%;
-    }
-
-
-    /* Cards de Anime */
-    .anime-cards-grid {
-        display: grid;
-        /* 💡 MOBILE-FIRST: Começa com 1 coluna */
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
-        width: 100%;
-        padding-top: var(--spacing-md);
-    }
-
-    .anime-card {
-        background-color: var(--card-bg-color);
-        padding: var(--spacing-md);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--box-shadow);
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .anime-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
-    }
-
-    .anime-card .anime-cover {
-        max-width: 100%;
-        height: auto;
-        border-radius: var(--border-radius-sm);
-        margin-bottom: var(--spacing-sm);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .anime-card .anime-title {
-        font-size: 1.2rem;
-        margin-top: 0;
-        margin-bottom: var(--spacing-xs);
-        /* 💡 Removeu nowrap/ellipsis para telas pequenas, permitindo quebra */
-        word-break: break-word;
-        width: 100%;
-    }
-
-    .anime-card .anime-genre {
-        font-size: 0.9rem;
-        color: rgba(224, 224, 224, 0.7);
-        margin-bottom: var(--spacing-xs);
-    }
-
-    .anime-card .anime-description {
-        font-size: 0.85rem;
-        text-align: left;
-        height: 60px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        margin-bottom: var(--spacing-sm);
-        flex-grow: 1;
-    }
-
-    .anime-card .add-to-list-button {
-        width: 100%;
-        margin-top: var(--spacing-sm);
-    }
-
-    /* Destaque de Status (nas cards) - (Sem alterações) */
-    .anime-status-highlight {
-        font-weight: bold;
-        padding: 2px 8px;
-        border-radius: var(--border-radius-sm);
-        font-size: 0.85rem;
-        white-space: nowrap;
-    }
-
-    .anime-status-highlight.completed {
-        background-color: var(--success-color);
-        color: white;
-    }
-    .anime-status-highlight.watching {
-        background-color: var(--info-color);
-        color: white;
-    }
-    .anime-status-highlight.plan-to-watch {
-        background-color: #ffc107;
-        color: #333;
-    }
-    .anime-status-highlight.on-hold {
-        background-color: #6c757d;
-        color: white;
-    }
-    .anime-status-highlight.dropped {
-        background-color: var(--error-color);
-        color: white;
-    }
-
-    /* Botões Fixos e Navegação */
-    /* 💡 Posicionamento fixo ajustado para telas menores */
-    .fixed-back-button {
-        position: fixed;
-        top: var(--spacing-sm);
-        left: var(--spacing-sm);
-        z-index: 1001; /* Z-index maior para ficar acima do header */
-        padding: var(--spacing-xs) var(--spacing-sm);
-        font-size: 0.9rem;
-        background-color: var(--card-bg-color);
-        box-shadow: var(--box-shadow);
-    }
-
-    .fixed-back-button:hover {
-        background-color: #1a4d80;
-    }
-
-    .scroll-to-top-button {
-        position: fixed;
-        bottom: var(--spacing-md);
-        right: var(--spacing-md);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: var(--accent-color);
-        color: white;
-        font-size: 1.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: var(--box-shadow);
-        z-index: 999;
-    }
-
-    /* Minha Lista de Animes */
-    .my-anime-list-container {
-        width: 100%;
-        max-width: 1200px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-md);
-    }
-
-    .my-anime-list-controls {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-md);
-        width: 100%;
-        max-width: 600px;
-        margin-bottom: var(--spacing-md);
-    }
-
+    /* Controles da Minha Lista */
     .sort-by-status-container {
-        display: flex;
-        /* 💡 MOBILE-FIRST: Empilha controles */
-        flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-sm);
-        width: 100%;
-        justify-content: center;
+        flex-direction: row;
+        max-width: 500px;
     }
 
     .sort-by-status-container select {
-        max-width: 300px; /* Ajuste o máximo para mobile */
-        width: 100%;
+        width: auto;
     }
+}
 
-    /* Contadores de Status */
-    .status-counters-display {
-        background-color: var(--secondary-bg-color);
-        padding: var(--spacing-md);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--box-shadow);
-        width: 100%;
-        max-width: 800px;
-        margin-top: var(--spacing-md);
-        text-align: center;
-        box-sizing: border-box;
+/* Desktop Grande (min-width: 1200px) */
+@media (min-width: 1200px) {
+    /* Cards: 3 Colunas no desktop */
+    .anime-cards-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
+}
 
-    .status-badges-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: var(--spacing-sm);
-        margin-top: var(--spacing-sm);
-    }
+/* ========================================================================= */
+/* --- SCROLLBAR --- */
+/* ========================================================================= */
+::-webkit-scrollbar {
+    width: 12px;
+}
 
-    .status-counter-badge {
-        padding: var(--spacing-xs) var(--spacing-sm);
-        border-radius: var(--border-radius-sm);
-        font-weight: bold;
-        font-size: 0.9rem;
-        white-space: nowrap;
-    }
+::-webkit-scrollbar-track {
+    background: var(--secondary-bg-color);
+    border-radius: 10px;
+}
 
-    /* Cores para badges (mesmas do destaque de status) - (Sem alterações) */
-    .status-counter-badge.completed {
-        background-color: var(--success-color);
-        color: white;
-    }
-    .status-counter-badge.watching {
-        background-color: var(--info-color);
-        color: white;
-    }
-    .status-counter-badge.plan-to-watch {
-        background-color: #ffc107;
-        color: #333;
-    }
-    .status-counter-badge.on-hold {
-        background-color: #6c757d;
-        color: white;
-    }
-    .status-counter-badge.dropped {
-        background-color: var(--error-color);
-        color: white;
-    }
+::-webkit-scrollbar-thumb {
+    background: var(--highlight-color);
+    border-radius: 10px;
+    border: 3px solid var(--secondary-bg-color);
+}
 
-    /* ========================================================================= */
-    /* --- MEDIA QUERIES PARA RESPONSIVIDADE --- */
-    /* ========================================================================= */
-
-    /* Tablet em Modo Retrato e Celulares Grandes (max-width: 1023px) */
-    @media (max-width: 1023px) {
-        /* Navbar/Header fixo */
-        .header-fixed-container {
-            flex-direction: column; /* Força busca e logout a empilhar */
-        }
-
-        .header-search-form {
-            flex-direction: row; /* Coloca os campos de busca lado a lado no tablet */
-        }
-
-        /* Cards */
-        .anime-cards-grid {
-            /* Tablet: 2 Colunas */
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    /* Tablet e Desktop Médio (min-width: 768px) */
-    @media (min-width: 768px) {
-        /* Geral: Mais padding nas bordas */
-        #root, .app-container {
-            padding: var(--spacing-lg);
-        }
-
-        /* Cabeçalhos maiores */
-        h1 { font-size: 2.5rem; }
-        h2 { font-size: 2rem; }
-        h3 { font-size: 1.5rem; }
-
-        /* Dashboard: Remove o offset de padding superior */
-        .dashboard-content {
-            padding-top: 20px;
-        }
-
-        /* Navbar/Header fixo: Volta para o layout horizontal */
-        .header-fixed-container {
-            flex-direction: row;
-            justify-content: flex-end; /* Alinha tudo à direita */
-            padding: var(--spacing-sm) var(--spacing-lg);
-        }
-
-        /* Centraliza a mensagem global sem ser afetada pelo header */
-        .global-message-container {
-            margin-top: 0;
-            top: 80px; /* Posiciona abaixo do header fixo */
-            position: fixed;
-            width: 100%;
-            left: 0;
-        }
-
-        .header-search-form {
-            flex-direction: row;
-            max-width: 500px;
-            width: auto;
-        }
-
-        .fixed-logout-button {
-            width: auto; /* Volta ao tamanho natural */
-        }
-
-        /* Controles da Minha Lista */
-        .sort-by-status-container {
-            flex-direction: row;
-            max-width: 500px;
-        }
-
-        .sort-by-status-container select {
-            width: auto;
-        }
-    }
-
-    /* Desktop Grande (min-width: 1200px) */
-    @media (min-width: 1200px) {
-        /* Cards: 3 Colunas no desktop */
-        .anime-cards-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    /* ========================================================================= */
-    /* --- SCROLLBAR --- */
-    /* ========================================================================= */
-    ::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: var(--secondary-bg-color);
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: var(--highlight-color);
-        border-radius: 10px;
-        border: 3px solid var(--secondary-bg-color);
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #c93a52;
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: #c93a52;
+}
