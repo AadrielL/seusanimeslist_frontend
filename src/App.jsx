@@ -1,5 +1,3 @@
-// ARQUIVO: src/main/frontend/seusanimeslist/src/App.js
-
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
@@ -10,11 +8,12 @@ import './index.css';
 import axioConfig from './axiosConfig';
 
 function App() {
-    const [jwtToken, setJwtToken] = useState(localStorage.getItem('jwtToken'));
+    // 🚨 CORRIGIDO: Lendo e escrevendo com a chave 'token' em vez de 'jwtToken'
+    // A chave 'token' é a que o LoginPage está salvando corretamente.
+    const [jwtToken, setJwtToken] = useState(localStorage.getItem('token'));
     const navigate = useNavigate();
 
-    // NOVO: Este useEffect configura o token no cabeçalho do axios
-    // sempre que o estado 'jwtToken' muda.
+    // Este bloco garante que o token esteja no cabeçalho.
     useEffect(() => {
         if (jwtToken) {
             axioConfig.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
@@ -23,6 +22,7 @@ function App() {
         }
     }, [jwtToken]);
 
+    // O Interceptor para lidar com 401/403 e limpar o token.
     useEffect(() => {
         const interceptor = axioConfig.interceptors.response.use(
             response => response,
@@ -41,13 +41,15 @@ function App() {
     }, []);
 
     const handleLogin = (token) => {
-        localStorage.setItem('jwtToken', token);
+        // 🚨 CORRIGIDO: Salva o token na chave 'token'
+        localStorage.setItem('token', token);
         setJwtToken(token);
         navigate('/dashboard');
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('jwtToken');
+        // 🚨 CORRIGIDO: Remove o token na chave 'token'
+        localStorage.removeItem('token');
         setJwtToken(null);
         navigate('/login');
     };
@@ -58,6 +60,7 @@ function App() {
                 <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/dashboard" element={
+                    // A condição agora verifica o estado JWT correto (lido da chave 'token')
                     jwtToken ? <Dashboard jwtToken={jwtToken} handleLogout={handleLogout} /> : <LoginPage onLogin={handleLogin} />
                 } />
                 <Route path="/my-animes" element={
@@ -69,4 +72,4 @@ function App() {
     );
 }
 
-export default App;
+export default App
