@@ -16,15 +16,28 @@ function LoginPage({ onLogin }) {
 
         try {
             const response = await axioConfig.post('/api/auth/login', { username, password });
+
+            // Extrai o token da resposta do backend (ex: { "token": "..." })
             const { token } = response.data;
+
+            // 🚨 CORREÇÃO CRÍTICA: SALVA o token no localStorage com a chave 'token'
+            localStorage.setItem('token', token);
+
+            // Chama a função onLogin (geralmente para atualizar o estado global de autenticação)
             onLogin(token);
+
+            // Redireciona para o dashboard, onde o axiosConfig usará o token salvo
             navigate('/dashboard');
+
         } catch (error) {
             console.error('Erro de login:', error);
-            if (error.response && error.response.data && error.response.data.message) {
-                setLoginMessage(`Erro: ${error.response.data.message}`);
+            // Melhorando a mensagem de erro para o usuário
+            if (error.response) {
+                // Tenta usar a mensagem de erro do Spring Boot, se houver
+                const errorMessage = error.response.data.message || error.response.data || 'Credenciais inválidas.';
+                setLoginMessage(`Erro: ${errorMessage}`);
             } else {
-                setLoginMessage('Erro ao fazer login. Verifique suas credenciais.');
+                setLoginMessage('Erro de conexão ou ao fazer login. Tente novamente.');
             }
         } finally {
             setLoading(false);
@@ -77,4 +90,3 @@ function LoginPage({ onLogin }) {
 }
 
 export default LoginPage;
-// a
