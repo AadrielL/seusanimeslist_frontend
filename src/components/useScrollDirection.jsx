@@ -1,4 +1,4 @@
-// src/hooks/useScrollDirection.js
+// src/components/useScrollDirection.js (ou .jsx)
 import { useState, useEffect } from 'react';
 
 const useScrollDirection = () => {
@@ -28,3 +28,5 @@ const useScrollDirection = () => {
     return scrollDir;
 };
 
+// 🛑 ADICIONE ESTA LINHA:
+export default useScrollDirection;
