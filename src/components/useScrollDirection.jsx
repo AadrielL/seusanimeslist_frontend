@@ -30,3 +30,4 @@ const useScrollDirection = () => {
 
 // 🛑 ADICIONE ESTA LINHA:
 export default useScrollDirection;
+"a"
