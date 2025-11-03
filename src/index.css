@@ -692,8 +692,26 @@ p a {
     }
 }
 
+/* ... (Seu código CSS anterior até a seção Cards de Anime) ... */
 
-/* Desktop Médio (min-width: 1008px) */
+/* As regras de 1 e 2 colunas não mudam */
+
+/* Tablet Retrato e Dispositivos Maiores (min-width: 641px) */
+@media (min-width: 641px) {
+    /* Centraliza o conteúdo geral */
+    #root, .app-container {
+        padding: var(--spacing-lg);
+    }
+
+    /* Cards: 2 Colunas */
+    .anime-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* 🛑 NOVO BREAKPOINT: Desktop Padrão (min-width: 1008px) 🛑 */
+/* Substitui o antigo 3 colunas e passa direto para 4 */
 @media (min-width: 1008px) {
     /* Dashboard: Ajusta o padding top para o header de 1 linha */
     .dashboard-content {
@@ -713,20 +731,21 @@ p a {
         flex-grow: 0;
     }
 
-    /* Cards: 3 Colunas */
+    /* Cards: 4 Colunas (Ideal para 20 itens por página: 4x5) */
     .anime-cards-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--spacing-md);
     }
 }
 
 
-/* Desktop Grande (min-width: 1300px) */
-@media (min-width: 1300px) {
-    /* Cards: 4 Colunas (Ideal para 20 itens por página: 4x5) */
+/* 🛑 NOVO BREAKPOINT: Desktop Grande (min-width: 1450px) 🛑 */
+@media (min-width: 1450px) {
+    /* Cards: 5 Colunas (Ideal para 20 itens por página: 5x4) */
     .anime-cards-grid {
-        grid-template-columns: repeat(4, 1fr);
-        /* Reduz o gap um pouco para caber mais */
-        gap: var(--spacing-md);
+        grid-template-columns: repeat(5, 1fr);
+        /* Reduz um pouco mais o gap para caber */
+        gap: var(--spacing-sm);
     }
 }
 
