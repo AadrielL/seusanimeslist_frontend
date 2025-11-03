@@ -609,105 +609,124 @@ p a {
 /* --- MEDIA QUERIES PARA RESPONSIVIDADE (Ajustado) --- */
 /* ========================================================================= */
 
-/* Mobile e Tablet Retrato (max-width: 767px) */
-@media (max-width: 767px) {
-    .header-fixed-container {
-        /* Garante que ocupe a largura total */
-        width: 100%;
-        padding: var(--spacing-sm);
-        /* Mantém o flex-wrap padrão para quebrar a linha */
-    }
 
+
+/* Cards de Anime */
+.anime-cards-grid {
+    /* Define o layout padrão para celular: 1 coluna */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    width: 100%;
+    padding-top: var(--spacing-md);
+}
+
+.anime-card {
+    /* ... (Resto das suas regras para .anime-card) ... */
+    background-color: var(--card-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+.anime-card .anime-cover {
+    /* Garante que a imagem se ajuste ao card */
+    width: 100%;
+    max-width: 150px; /* Limite a largura máxima da capa */
+    height: auto;
+    aspect-ratio: 2 / 3; /* Proporção 2:3 (padrão de capas de anime) */
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.anime-card .anime-title {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
+    word-break: break-word;
+    width: 100%;
+}
+/* ... (Seu código CSS para outros elementos das cards) ... */
+
+
+/* ========================================================================= */
+/* --- MEDIA QUERIES PARA PROPORÇÃO E RESPONSIVIDADE (CORRIGIDO) --- */
+/* ========================================================================= */
+
+/* Mobile Padrão (max-width: 640px) */
+@media (max-width: 640px) {
+    /* Dashboard: Ajusta o padding top para acomodar a barra única que pode ocupar 2 linhas */
     .dashboard-content {
-        /* Ajusta o padding top para acomodar a barra única que pode ocupar 2 linhas */
         padding-top: 130px;
     }
 
-    /* Ajusta a mensagem global no mobile */
-    .global-message-container {
-        margin-top: 120px; /* Mais espaço para o header que pode estar em duas linhas */
+    /* Cards: 1 Coluna (padrão, mas mantido para clareza) */
+    .anime-cards-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 
-/* Tablet e Desktop Médio (min-width: 768px) */
-@media (min-width: 768px) {
-    /* Geral: Mais padding nas bordas */
+/* Tablet Retrato e Dispositivos Maiores (min-width: 641px) */
+@media (min-width: 641px) {
+    /* Centraliza o conteúdo geral */
     #root, .app-container {
         padding: var(--spacing-lg);
     }
 
-    /* Cabeçalhos maiores */
-    h1 { font-size: 2.5rem; }
-    h2 { font-size: 2rem; }
-    h3 { font-size: 1.5rem; }
+    /* Cards: 2 Colunas */
+    .anime-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
-    /* Dashboard: Ajusta o padding top para acomodar o header de 1 linha */
+
+/* Desktop Médio (min-width: 1008px) */
+@media (min-width: 1008px) {
+    /* Dashboard: Ajusta o padding top para o header de 1 linha */
     .dashboard-content {
         padding-top: 80px;
     }
 
-    /* CORREÇÃO NO CONTAINER FIXO (Desktop/Tablet) */
+    /* Header: Altura maior e layout de 1 linha */
     .header-fixed-container {
-        flex-direction: row;
-        justify-content: space-between;
+        flex-wrap: nowrap;
+        min-height: 70px;
         padding: var(--spacing-sm) var(--spacing-lg);
-        align-items: center;
-        flex-wrap: nowrap; /* Não quebra a linha no desktop */
-        gap: var(--spacing-md);
-        min-height: 70px; /* Altura um pouco maior no desktop */
     }
 
-    /* Reposiciona o botão de voltar */
-    .fixed-back-button {
-        top: var(--spacing-lg);
-        left: var(--spacing-lg);
-    }
-
-    /* Centraliza a mensagem global sem ser afetada pelo header */
-    .global-message-container {
-        margin-top: 0;
-        top: 80px; /* Ajuste para desktop */
-        position: fixed;
-        width: 100%;
-        left: 0;
-    }
-
-    /* Ajuste da Busca */
+    /* Centraliza a busca e organiza botões em uma linha */
     .header-search-form {
-        flex-direction: row;
-        max-width: 350px;
-        width: auto;
+        max-width: 400px; /* Limita a busca para não ser muito larga */
         flex-grow: 0;
     }
 
-    /* Garante que o botão de logout não seja esmagado */
-    .fixed-logout-button {
-        width: auto;
-        flex-shrink: 0;
-    }
-
-    /* Cards: 2 Colunas no tablet/desktop médio */
+    /* Cards: 3 Colunas */
     .anime-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* Controles da Minha Lista */
-    .sort-by-status-container {
-        flex-direction: row;
-        max-width: 500px;
-    }
-
-    .sort-by-status-container select {
-        width: auto;
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* Desktop Grande (min-width: 1200px) */
-@media (min-width: 1200px) {
-    /* Cards: 3 Colunas no desktop */
+
+/* Desktop Grande (min-width: 1300px) */
+@media (min-width: 1300px) {
+    /* Cards: 4 Colunas (Ideal para 20 itens por página: 4x5) */
     .anime-cards-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        /* Reduz o gap um pouco para caber mais */
+        gap: var(--spacing-md);
     }
 }
 
