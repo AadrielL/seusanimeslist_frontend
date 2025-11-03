@@ -742,3 +742,80 @@ p a {
     backdrop-filter: blur(2px); /* Adiciona um leve desfoque ao fundo */
     z-index: 2;
 }
+/* ========================================================================= */
+/* --- Base e Layout --- */
+/* ========================================================================= */
+
+/* 🛑 NOVO: Garante que HTML e BODY ocupem a altura e largura total da janela */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%; /* Important for vertical stretching */
+    overflow-x: hidden; /* Evita scroll horizontal indesejado */
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--primary-bg-color); /* Fallback ou cor de fundo para outras telas */
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-y: scroll; /* Permite scroll vertical se o conteúdo for maior */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 🛑 AJUSTADO: Removendo align-items: center e padding do root/app-container */
+/* O auth-background-wrapper já fará o alinhamento e o padding para o conteúdo de login */
+#root, .app-container {
+    display: flex;
+    flex-direction: column;
+    /* Remova ou comente: align-items: center; */
+    /* Remova ou comente: padding: var(--spacing-sm); */
+    min-height: 100vh;
+    width: 100%; /* Garante 100% da largura */
+    box-sizing: border-box;
+    /* Adicione: */
+    position: relative; /* Para que os elementos filhos se posicionem corretamente */
+}
+
+/* ========================================================================= */
+/* --- CONTÊINER DE FUNDO DA TELA DE AUTENTICAÇÃO --- */
+/* ========================================================================= */
+
+.auth-background-wrapper {
+    width: 100%; /* Isso já estava correto, mas é bom revisar */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url('/background_login.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    position: absolute; /* 🛑 ALTERADO: Use absolute para cobrir a tela do #root */
+    top: 0;
+    left: 0;
+    z-index: 1; /* Deve ser menor que o overlay e o card */
+}
+
+/* O resto do .auth-background-wrapper::before e .auth-container permanece o mesmo */
+.auth-background-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 2;
+}
+
+.auth-container {
+    /* ... (suas regras existentes) ... */
+    position: relative;
+    z-index: 3;
+}
