@@ -1,18 +1,48 @@
+// src/components/Dashboard.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axioConfig from '../axiosConfig';
-import useScrollDirection from './useScrollDirec    tion';
+// 🛑 IMPORTAÇÃO REMOVIDA:
+// import useScrollDirection from '../hooks/useScrollDirection';
+
 function Dashboard({ jwtToken, handleLogout }) {
+
+    // 🛑 LÓGICA DO HOOK INTEGRADA AQUI (INÍCIO DA FUNÇÃO) 🛑
+    const [scrollDir, setScrollDir] = useState("up");
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    // Efeito para a direção do scroll
+    useEffect(() => {
+        const updateScrollDir = () => {
+            const { scrollY } = window;
+            const direction = scrollY > lastScrollY ? "down" : "up";
+
+            if ((direction !== scrollDir && Math.abs(lastScrollY - scrollY) > 5) || scrollY === 0) {
+                setScrollDir(direction);
+            }
+            setLastScrollY(scrollY > 0 ? scrollY : 0);
+        };
+
+        const onScroll = () => window.requestAnimationFrame(updateScrollDir);
+        window.addEventListener("scroll", onScroll);
+
+        return () => window.removeEventListener("scroll", onScroll);
+    }, [lastScrollY, scrollDir]);
+
+    // Variável para uso no JSX
+    const scrollDirection = scrollDir;
+    // 🛑 FIM DA LÓGICA DO HOOK INTEGRADA 🛑
+
+    // SEUS ESTADOS ORIGINAIS:
     const [animes, setAnimes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [globalMessage, setGlobalMessage] = useState({ text: '', type: '' });
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchCategory, setSearchCategory] = useState(''); // Mantido, mas removido do layout fixo
+    const [searchCategory, setSearchCategory] = useState('');
     const [expandedAnimeId, setExpandedAnimeId] = useState(null);
     const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
-
-    const scrollDirection = useScrollDirection(); // Usa o Hook
 
     const navigate = useNavigate();
 
@@ -65,7 +95,7 @@ function Dashboard({ jwtToken, handleLogout }) {
         setGlobalMessage({ text: '', type: '' });
 
         const trimmedSearchTerm = searchTerm.trim();
-        const trimmedSearchCategory = searchCategory.trim(); // Mantido para lógica
+        const trimmedSearchCategory = searchCategory.trim();
 
         if (!trimmedSearchTerm && !trimmedSearchCategory) {
             fetchAllAnimes(0);
@@ -76,7 +106,6 @@ function Dashboard({ jwtToken, handleLogout }) {
         let searchType = '';
         let searchValue = '';
 
-        // A lógica permanece a mesma para a busca, mesmo que o campo de categoria não esteja no header fixo
         if (trimmedSearchCategory) {
             params.append('categoria', trimmedSearchCategory);
             searchType = 'categoria';
@@ -172,10 +201,10 @@ function Dashboard({ jwtToken, handleLogout }) {
         });
     };
 
-    // 🛑 Lógica para a barra flutuante: Esconder se rolar para baixo e não estiver no topo.
+    // Lógica para a barra flutuante: Esconder se rolar para baixo e não estiver no topo.
     const isFloatingNavHidden = scrollDirection === "down" && window.scrollY > 200;
 
-    // 🛑 FUNÇÃO PARA FORÇAR BUSCA VAZIA (Resetar Busca)
+    // FUNÇÃO PARA FORÇAR BUSCA VAZIA (Resetar Busca)
     const handleResetSearch = () => {
         setSearchTerm('');
         setSearchCategory(''); // Também limpa a categoria em memória
@@ -231,7 +260,6 @@ function Dashboard({ jwtToken, handleLogout }) {
 
                 <hr />
                 <h2>NAVEGAÇÃO RÁPIDA</h2>
-                {/* Mantido aqui para referência, mas a barra flutuante é o novo menu principal */}
                 <nav className="dashboard-nav">
                     <Link to="/my-animes" className="nav-button">Minha Lista de Animes</Link>
                     <Link to="/add-anime" className="nav-button">Adicionar Novo Anime</Link>
@@ -313,7 +341,6 @@ function Dashboard({ jwtToken, handleLogout }) {
                     </>
                 )}
             </div>
-
             {showScrollToTopButton && (
                 <button onClick={scrollToTop} className="scroll-to-top-button">↑</button>
             )}
