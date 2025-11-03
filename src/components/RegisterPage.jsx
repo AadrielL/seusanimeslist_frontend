@@ -16,7 +16,7 @@ function RegisterPage() {
 
         try {
             const response = await axioConfig.post('/api/auth/register', { username, email, password });
-            
+
             setRegisterMessage('Usuário registrado com sucesso! Faça login.');
             setUsername('');
             setEmail('');
@@ -34,59 +34,62 @@ function RegisterPage() {
     };
 
     return (
-        <div className="auth-container">
-            <h2>Registro de Usuário</h2>
-            <form onSubmit={handleRegister}>
-                <div>
-                    <label htmlFor="username">Usuário:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        placeholder="seu_usuario"
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        placeholder="seuemail@exemplo.com"
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Senha:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        placeholder="********"
-                        disabled={loading}
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Registrando...' : 'Registrar'}
-                </button>
-            </form>
+        // 🛑 DIV DE FUNDO ADICIONADA 🛑
+        <div className="auth-background-wrapper">
+            <div className="auth-container">
+                <h2>Registro de Usuário</h2>
+                <form onSubmit={handleRegister}>
+                    <div>
+                        <label htmlFor="username">Usuário:</label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            placeholder="seu_usuario"
+                            disabled={loading}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="email">Email:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            placeholder="seuemail@exemplo.com"
+                            disabled={loading}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password">Senha:</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            placeholder="********"
+                            disabled={loading}
+                        />
+                    </div>
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Registrando...' : 'Registrar'}
+                    </button>
+                </form>
 
-            {registerMessage && <p className={`message ${registerMessage.includes('Erro') ? 'error' : 'success'}`}>{registerMessage}</p>}
-            
-            <p>
-                Já tem uma conta?{' '}
-                <Link to="/login">
-                    Faça Login!
-                </Link>
-            </p>
-        </div>
+                {registerMessage && <p className={`message ${registerMessage.includes('Erro') ? 'error' : 'success'}`}>{registerMessage}</p>}
+
+                <p>
+                    Já tem uma conta?{' '}
+                    <Link to="/login">
+                        Faça Login!
+                    </Link>
+                </p>
+            </div>
+        </div> // 🛑 FECHAMENTO DA DIV DE FUNDO 🛑
     );
 }
 

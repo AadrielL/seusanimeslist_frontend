@@ -220,20 +220,24 @@ p a {
 /* --- CONTÊINER DE AUTENTICAÇÃO (LOGIN/REGISTRO) - CYBERPUNK/EMO --- */
 /* ========================================================================= */
 .auth-container {
-    background-color: var(--cyber-bg-color); /* Fundo quase preto */
+    background-color: var(--cyber-bg-color);
     padding: var(--spacing-lg);
-    border-radius: var(--border-radius-lg); /* Bordas mais arredondadas */
-    box-shadow: 0 0 20px var(--cyber-shadow-color); /* Sombra neon violeta */
-    border: 2px solid var(--cyber-border-color); /* Borda violeta */
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 0 20px var(--cyber-shadow-color);
+    border: 2px solid var(--cyber-border-color);
     max-width: 500px;
     width: 100%;
-    margin: var(--spacing-xl) auto; /* Mais espaçamento para destacar */
+    margin: var(--spacing-xl) auto;
     text-align: center;
     box-sizing: border-box;
-    transition: all 0.5s ease-in-out; /* Transição para o modo light */
+    transition: all 0.5s ease-in-out;
+
+    /* Garante que o card fique acima do overlay do fundo */
+    position: relative;
+    z-index: 3;
 }
 
-.auth-container h1 {
+.auth-container h2 {
     color: var(--cyber-text-color); /* Título ciano elétrico */
     text-shadow: 0 0 10px var(--cyber-text-color); /* Brilho neon no título */
     margin-bottom: var(--spacing-lg);
@@ -298,14 +302,19 @@ p a {
 }
 
 
-/* Mensagens Globais e de Formulário (Mantido padrão) */
+/* Mensagens Globais e de Formulário (CORRIGIDO) */
 .global-message-container {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-bottom: var(--spacing-md);
-    z-index: 1000;
-    margin-top: 60px; /* Ajuste inicial para não ficar atrás do header */
+
+    /* 🛑 CORREÇÃO DE Z-INDEX E POSICIONAMENTO 🛑 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    padding-top: 80px; /* Garante que comece abaixo do header fixo */
 }
 
 .global-message {
@@ -606,63 +615,7 @@ p a {
 
 
 /* ========================================================================= */
-/* --- MEDIA QUERIES PARA RESPONSIVIDADE (Ajustado) --- */
-/* ========================================================================= */
-
-
-
-/* Cards de Anime */
-.anime-cards-grid {
-    /* Define o layout padrão para celular: 1 coluna */
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-    width: 100%;
-    padding-top: var(--spacing-md);
-}
-
-.anime-card {
-    /* ... (Resto das suas regras para .anime-card) ... */
-    background-color: var(--card-bg-color);
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--box-shadow);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
-}
-
-.anime-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
-}
-
-.anime-card .anime-cover {
-    /* Garante que a imagem se ajuste ao card */
-    width: 100%;
-    max-width: 150px; /* Limite a largura máxima da capa */
-    height: auto;
-    aspect-ratio: 2 / 3; /* Proporção 2:3 (padrão de capas de anime) */
-    object-fit: cover;
-    border-radius: var(--border-radius-sm);
-    margin-bottom: var(--spacing-sm);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.anime-card .anime-title {
-    font-size: 1.2rem;
-    margin-top: 0;
-    margin-bottom: var(--spacing-xs);
-    word-break: break-word;
-    width: 100%;
-}
-/* ... (Seu código CSS para outros elementos das cards) ... */
-
-
-/* ========================================================================= */
-/* --- MEDIA QUERIES PARA PROPORÇÃO E RESPONSIVIDADE (CORRIGIDO) --- */
+/* --- MEDIA QUERIES PARA PROPORÇÃO E RESPONSIVIDADE (FINAL) --- */
 /* ========================================================================= */
 
 /* Mobile Padrão (max-width: 640px) */
@@ -672,7 +625,7 @@ p a {
         padding-top: 130px;
     }
 
-    /* Cards: 1 Coluna (padrão, mas mantido para clareza) */
+    /* Cards: 1 Coluna */
     .anime-cards-grid {
         grid-template-columns: 1fr;
     }
@@ -692,26 +645,8 @@ p a {
     }
 }
 
-/* ... (Seu código CSS anterior até a seção Cards de Anime) ... */
 
-/* As regras de 1 e 2 colunas não mudam */
-
-/* Tablet Retrato e Dispositivos Maiores (min-width: 641px) */
-@media (min-width: 641px) {
-    /* Centraliza o conteúdo geral */
-    #root, .app-container {
-        padding: var(--spacing-lg);
-    }
-
-    /* Cards: 2 Colunas */
-    .anime-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-
-/* 🛑 NOVO BREAKPOINT: Desktop Padrão (min-width: 1008px) 🛑 */
-/* Substitui o antigo 3 colunas e passa direto para 4 */
+/* Desktop Padrão (min-width: 1008px) */
 @media (min-width: 1008px) {
     /* Dashboard: Ajusta o padding top para o header de 1 linha */
     .dashboard-content {
@@ -739,7 +674,7 @@ p a {
 }
 
 
-/* 🛑 NOVO BREAKPOINT: Desktop Grande (min-width: 1450px) 🛑 */
+/* Desktop Grande (min-width: 1450px) */
 @media (min-width: 1450px) {
     /* Cards: 5 Colunas (Ideal para 20 itens por página: 5x4) */
     .anime-cards-grid {
@@ -767,4 +702,43 @@ p a {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #c93a52;
+}
+
+/* ========================================================================= */
+/* --- CONTÊINER DE FUNDO DA TELA DE AUTENTICAÇÃO --- */
+/* ========================================================================= */
+
+/* Contêiner que envolve todo o conteúdo da tela de login/registro (onde a imagem será aplicada) */
+.auth-background-wrapper {
+    /* Ocupa a tela toda */
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente o auth-container */
+    align-items: center;    /* Centraliza verticalmente o auth-container */
+
+    /* 🛑 IMPORTANTE: Configuração da Imagem (ASSUME: background_login.jpg na pasta public/) 🛑 */
+    background-image: url('/background_login.jpg');
+    background-size: cover;          /* Garante que a imagem cubra todo o fundo */
+    background-position: center center; /* Centraliza a imagem */
+    background-attachment: fixed;    /* Mantém a imagem fixa ao rolar (efeito paralaxe sutil) */
+    background-repeat: no-repeat;
+
+    /* Adiciona uma camada escura para melhorar a leitura do formulário */
+    position: relative;
+    z-index: 1; /* Garante que os pseudo-elementos funcionem */
+}
+
+/* Pseudo-elemento para criar um 'overlay' (camada escura ou colorida) */
+.auth-background-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Adiciona um overlay preto com 60% de opacidade */
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px); /* Adiciona um leve desfoque ao fundo */
+    z-index: 2;
 }

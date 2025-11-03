@@ -45,47 +45,50 @@ function LoginPage({ onLogin }) {
     };
 
     return (
-        <div className="auth-container">
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor="username">Usuário:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        placeholder="seu_usuario"
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Senha:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        placeholder="********"
-                        disabled={loading}
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Entrando...' : 'Login'}
-                </button>
-            </form>
+        // 🛑 DIV DE FUNDO ADICIONADA 🛑
+        <div className="auth-background-wrapper">
+            <div className="auth-container">
+                <h2>Login</h2>
+                <form onSubmit={handleLogin}>
+                    <div>
+                        <label htmlFor="username">Usuário:</label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            placeholder="seu_usuario"
+                            disabled={loading}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password">Senha:</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            placeholder="********"
+                            disabled={loading}
+                        />
+                    </div>
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Entrando...' : 'Login'}
+                    </button>
+                </form>
 
-            {loginMessage && <p className={`message ${loginMessage.includes('Erro') ? 'error' : 'success'}`}>{loginMessage}</p>}
+                {loginMessage && <p className={`message ${loginMessage.includes('Erro') ? 'error' : 'success'}`}>{loginMessage}</p>}
 
-            <p>
-                Não tem uma conta?{' '}
-                <Link to="/register">
-                    Registre-se
-                </Link>
-            </p>
-        </div>
+                <p>
+                    Não tem uma conta?{' '}
+                    <Link to="/register">
+                        Registre-se
+                    </Link>
+                </p>
+            </div>
+        </div> // 🛑 FECHAMENTO DA DIV DE FUNDO 🛑
     );
 }
 
