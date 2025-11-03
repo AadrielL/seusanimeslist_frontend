@@ -1,18 +1,13 @@
-// src/components/Dashboard.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axioConfig from '../axiosConfig';
-// 🛑 IMPORTAÇÃO REMOVIDA:
-// import useScrollDirection from '../hooks/useScrollDirection';
 
 function Dashboard({ jwtToken, handleLogout }) {
 
-    // 🛑 LÓGICA DO HOOK INTEGRADA AQUI (INÍCIO DA FUNÇÃO) 🛑
+    // 🛑 LÓGICA DO HOOK DE SCROLL REINTRODUZIDA 🛑
     const [scrollDir, setScrollDir] = useState("up");
     const [lastScrollY, setLastScrollY] = useState(0);
 
-    // Efeito para a direção do scroll
     useEffect(() => {
         const updateScrollDir = () => {
             const { scrollY } = window;
@@ -30,11 +25,12 @@ function Dashboard({ jwtToken, handleLogout }) {
         return () => window.removeEventListener("scroll", onScroll);
     }, [lastScrollY, scrollDir]);
 
-    // Variável para uso no JSX
-    const scrollDirection = scrollDir;
-    // 🛑 FIM DA LÓGICA DO HOOK INTEGRADA 🛑
+    // Variável de controle para o JSX (esconde se rolar para baixo, exceto se estiver no topo)
+    const isHeaderHidden = scrollDir === "down" && window.scrollY > 100;
+    // 🛑 FIM DA LÓGICA DO SCROLL 🛑
 
-    // SEUS ESTADOS ORIGINAIS:
+
+    // ESTADOS
     const [animes, setAnimes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -43,6 +39,7 @@ function Dashboard({ jwtToken, handleLogout }) {
     const [searchCategory, setSearchCategory] = useState('');
     const [expandedAnimeId, setExpandedAnimeId] = useState(null);
     const [showScrollToTopButton, setShowScrollToTopButton] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(true);
 
     const navigate = useNavigate();
 
@@ -51,7 +48,22 @@ function Dashboard({ jwtToken, handleLogout }) {
     const [totalPaginas, setTotalPaginas] = useState(0);
     const tamanhoPagina = 20;
 
-    // Efeito para esconder a mensagem global após 3 segundos
+
+    // 🆕 EFEITO TEMA: Alterna a classe 'light-mode' no body
+    useEffect(() => {
+        // Inicializa com base no estado (pode ser carregado do localStorage se desejar persistência)
+        if (isDarkMode) {
+            document.body.classList.remove('light-mode');
+        } else {
+            document.body.classList.add('light-mode');
+        }
+    }, [isDarkMode]);
+
+    const toggleTheme = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
+
+    // Efeito para mensagens globais
     useEffect(() => {
         if (globalMessage.text || error) {
             const timer = setTimeout(() => {
@@ -61,6 +73,28 @@ function Dashboard({ jwtToken, handleLogout }) {
             return () => clearTimeout(timer);
         }
     }, [globalMessage, error]);
+
+    // Efeito para carregamento inicial e scroll to top
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            fetchAllAnimes(0);
+        } else {
+            setError('Você precisa estar logado para ver os animes.');
+            setLoading(false);
+        }
+
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+                setShowScrollToTopButton(true);
+            } else {
+                setShowScrollToTopButton(false);
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const fetchAllAnimes = async (page = 0) => {
         setLoading(true);
@@ -72,7 +106,6 @@ function Dashboard({ jwtToken, handleLogout }) {
             setTotalPaginas(response.data.totalPages);
             setPaginaAtual(page);
 
-            console.log("All animes loaded successfully:", response.data);
             if (response.data.content.length > 0) {
                 setGlobalMessage({ text: `Página ${page + 1} de animes carregada!`, type: 'success' });
             } else {
@@ -137,7 +170,6 @@ function Dashboard({ jwtToken, handleLogout }) {
             } else {
                 setGlobalMessage({ text: `Nenhum anime encontrado com ${searchType} "${searchValue}".`, type: 'info' });
             }
-            console.log("Busca unificada realizada com sucesso:", response.data);
         } catch (err) {
             console.error('Erro na requisição de busca unificada:', err);
             if (err.response && (err.response.status === 403 || err.response.status === 401)) {
@@ -151,28 +183,7 @@ function Dashboard({ jwtToken, handleLogout }) {
         }
     };
 
-    // useEffect para carregamento inicial e scroll to top
-    useEffect(() => {
-        if (localStorage.getItem('jwtToken')) {
-            fetchAllAnimes(0);
-        } else {
-            setError('Você precisa estar logado para ver os animes.');
-            setLoading(false);
-        }
-
-        const handleScroll = () => {
-            if (window.scrollY > 300) {
-                setShowScrollToTopButton(true);
-            } else {
-                setShowScrollToTopButton(false);
-            }
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
+    // Funções de Lista e Botões
     const handleAddButtonClick = (animeId) => {
         setExpandedAnimeId(expandedAnimeId === animeId ? null : animeId);
         setGlobalMessage({ text: '', type: '' });
@@ -201,23 +212,27 @@ function Dashboard({ jwtToken, handleLogout }) {
         });
     };
 
-    // Lógica para a barra flutuante: Esconder se rolar para baixo e não estiver no topo.
-    const isFloatingNavHidden = scrollDirection === "down" && window.scrollY > 200;
+    // Botão "Resetar Busca" removido do menu, mas mantido a função caso precise.
+    // const handleResetSearch = () => { ... }
 
-    // FUNÇÃO PARA FORÇAR BUSCA VAZIA (Resetar Busca)
-    const handleResetSearch = () => {
-        setSearchTerm('');
-        setSearchCategory(''); // Também limpa a categoria em memória
-        fetchAllAnimes(0); // Recarrega a primeira página de todos os animes
-        setGlobalMessage({ text: 'Busca resetada. Exibindo todos os animes.', type: 'info' });
-    }
 
     return (
         <div className="app-container">
-            {/* 🛑 HEADER FIXO SUPERIOR - Contém Busca ÚNICA e Logout */}
-            <div className="header-fixed-container">
+            {/* 🛑 HEADER ÚNICO QUE SOME E APARECE 🛑 */}
+            <div className={`header-fixed-container full-nav-bar ${isHeaderHidden ? 'hidden' : ''}`}>
+
+                {/* 1. Botões de Navegação (Minha Lista e Modo) */}
+                <div className="main-nav-buttons">
+                    <Link to="/my-animes" className="nav-button">
+                        Minha Lista
+                    </Link>
+                    <button onClick={toggleTheme} className="nav-button theme-toggle-button">
+                        {isDarkMode ? '🌞 Modo Light' : '🌙 Modo Dark'}
+                    </button>
+                </div>
+
+                {/* 2. Formulário de Busca */}
                 <form onSubmit={handleUnifiedSearch} className="header-search-form">
-                    {/* Apenas um campo para Título ou Ano */}
                     <input
                         type="text"
                         placeholder="Buscar Título ou Ano..."
@@ -226,28 +241,15 @@ function Dashboard({ jwtToken, handleLogout }) {
                     />
                     <button type="submit">Buscar</button>
                 </form>
-                <button onClick={handleLogout} className="fixed-logout-button">LOGOUT</button>
-            </div>
 
-            {/* 🛑 NOVO: BARRA DE NAVEGAÇÃO FLUTUANTE */}
-            <div className={`floating-nav-bar ${isFloatingNavHidden ? 'hidden' : ''}`}>
-                <button
-                    onClick={handleResetSearch}
-                    className="nav-button"
-                >
-                    Resetar Busca
-                </button>
-                <Link to="/my-animes" className="nav-button">
-                    Minha Lista
-                </Link>
-                <Link to="/add-anime" className="nav-button">
-                    Adicionar Novo Anime
-                </Link>
+                {/* 3. Botão de Logout */}
+                <button onClick={handleLogout} className="fixed-logout-button">LOGOUT</button>
             </div>
 
 
             {(globalMessage.text || error) && (
-                <div className="global-message-container">
+                // Ajuste o margin-top para que a mensagem apareça abaixo do header
+                <div className="global-message-container" style={{ marginTop: '70px' }}>
                     <div className={`global-message ${error ? 'error' : globalMessage.type}`}>
                         {error ? error : globalMessage.text}
                     </div>
@@ -259,14 +261,8 @@ function Dashboard({ jwtToken, handleLogout }) {
                 <p>Aqui você pode explorar animes, buscar e gerenciar sua lista pessoal.</p>
 
                 <hr />
-                <h2>NAVEGAÇÃO RÁPIDA</h2>
-                <nav className="dashboard-nav">
-                    <Link to="/my-animes" className="nav-button">Minha Lista de Animes</Link>
-                    <Link to="/add-anime" className="nav-button">Adicionar Novo Anime</Link>
-                </nav>
-
-                <hr />
                 <h2>ANIMES DISPONÍVEIS (OU LANÇAMENTOS/POPULARES)</h2>
+
                 {loading && <p>Carregando animes...</p>}
 
                 {!loading && animes.length === 0 && !error && (
@@ -341,6 +337,7 @@ function Dashboard({ jwtToken, handleLogout }) {
                     </>
                 )}
             </div>
+
             {showScrollToTopButton && (
                 <button onClick={scrollToTop} className="scroll-to-top-button">↑</button>
             )}

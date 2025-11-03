@@ -1,4 +1,4 @@
-:root {
+::root {
     --primary-bg-color: #1a1a2e; /* Azul escuro principal */
     --secondary-bg-color: #16213e; /* Azul escuro um pouco mais claro */
     --card-bg-color: #0f3460; /* Azul médio para cards */
@@ -32,6 +32,8 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     overflow-y: scroll;
+    /* Transição suave para o modo light/dark */
+    transition: background-color 0.3s, color 0.3s;
 }
 
 #root, .app-container {
@@ -85,6 +87,8 @@ form {
     max-width: 400px;
     margin-bottom: var(--spacing-md);
     box-sizing: border-box;
+    /* Transição para modo light/dark */
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 form div {
@@ -112,6 +116,8 @@ textarea {
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
+    /* Transição para modo light/dark */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 input::placeholder,
@@ -188,6 +194,8 @@ p a {
     margin: var(--spacing-md) auto;
     text-align: center;
     box-sizing: border-box;
+    /* Transição para modo light/dark */
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .auth-container p {
@@ -244,37 +252,17 @@ p a {
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-md);
-    /* Aumenta o padding top para acomodar o header fixo e a barra flutuante */
-    padding-top: 150px;
+    /* Ajustado para acomodar a barra única que some (Mobile) */
+    padding-top: 130px;
 }
 
-.dashboard-nav {
-    display: flex;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-md);
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-}
+/* 🛑 REMOVIDO: dashboard-nav (não é mais usado, a navegação está no header fixo) */
+/* 🛑 REMOVIDO: nav-button (será redefinido para ser menor dentro do header) */
 
-.nav-button {
-    background-color: var(--card-bg-color);
-    color: var(--text-color);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    white-space: nowrap;
-    flex-grow: 1;
-    text-align: center;
-    min-width: 150px;
-}
 
-.nav-button:hover {
-    background-color: #1a4d80;
-}
-
-/* 🛑 Contêiner para elementos fixos do cabeçalho */
+/* ========================================================================= */
+/* --- HEADER FIXO ÚNICO (Busca, Nav, Logout) --- */
+/* ========================================================================= */
 .header-fixed-container {
     position: fixed;
     top: 0;
@@ -283,25 +271,54 @@ p a {
     z-index: 1000;
     background-color: var(--primary-bg-color);
     box-shadow: var(--box-shadow);
-    /* MOBILE-FIRST: Coloca busca e logout lado a lado em telas pequenas */
+
+    /* Layout */
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-between; /* Espaço entre busca e logout */
+    justify-content: space-between;
     padding: var(--spacing-sm);
     gap: var(--spacing-sm);
     box-sizing: border-box;
+    flex-wrap: wrap;
+
+    /* 🛑 REGRAS PARA SUMIR/APARECER 🛑 */
+    transition: transform 0.3s ease-in-out, background-color 0.3s, box-shadow 0.3s;
 }
 
-/* Ajustes para o botão de logout fixo */
-.fixed-logout-button {
-    padding: var(--spacing-xs) var(--spacing-sm);
+/* 🛑 CLASSE QUE FAZ A BARRA SUMIR 🛑 */
+.header-fixed-container.hidden {
+    /* Move a barra totalmente para fora da tela */
+    transform: translateY(-120px);
+}
+
+/* Container para agrupar os botões de navegação (lado esquerdo) */
+.main-nav-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Estilo para os botões de navegação dentro do header */
+.main-nav-buttons .nav-button {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    padding: var(--spacing-xs) var(--spacing-sm); /* Botões menores */
     font-size: 0.9rem;
-    width: auto;
-    flex-shrink: 0; /* Impede que seja esmagado */
+    flex-grow: 0;
+    min-width: 100px;
+    text-align: center;
+    border-radius: var(--border-radius-sm);
+    transition: background-color 0.3s ease;
 }
 
-/* Estilo para a barra de busca no cabeçalho */
+.main-nav-buttons .nav-button:hover {
+    background-color: #1a4d80;
+}
+
+
+/* Estilo para a barra de busca no cabeçalho (Centro) */
 .header-search-form {
     background-color: var(--secondary-bg-color);
     padding: var(--spacing-xs);
@@ -313,6 +330,7 @@ p a {
     gap: var(--spacing-xs);
     width: 100%;
     max-width: none;
+    flex-grow: 1; /* Permite ocupar o espaço restante */
 }
 
 .header-search-form input {
@@ -327,6 +345,14 @@ p a {
     font-size: 0.85rem;
     white-space: nowrap;
     width: auto;
+}
+
+/* Ajustes para o botão de logout fixo (Direita) */
+.fixed-logout-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+    width: auto;
+    flex-shrink: 0;
 }
 
 
@@ -348,7 +374,7 @@ p a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s;
 }
 
 .anime-card:hover {
@@ -483,44 +509,56 @@ p a {
     white-space: nowrap;
 }
 
+/* 🛑 REMOVIDO: BARRA DE NAVEGAÇÃO FLUTUANTE/STICKY (.floating-nav-bar) */
+
+
 /* ========================================================================= */
-/* --- BARRA DE NAVEGAÇÃO FLUTUANTE/STICKY (Corrigido) --- */
+/* --- MODO LIGHT (Adicionado) --- */
 /* ========================================================================= */
-.floating-nav-bar {
-    position: fixed;
-    /* Posição após o header fixo (desktop) */
-    top: 60px;
-    left: 0;
-    width: 100%;
-    z-index: 990;
+body.light-mode {
+    --primary-bg-color: #f0f0f5; /* Fundo claro */
+    --secondary-bg-color: #ffffff; /* Fundo mais claro */
+    --card-bg-color: #e0e0e5; /* Card claro */
+    --text-color: #1a1a2e; /* Texto escuro */
+    --highlight-color: #0f3460; /* Azul escuro para destaque */
+    --accent-color: #e94560; /* Vermelho/Rosa (Mantido) */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3 {
+    color: var(--highlight-color);
+}
+
+body.light-mode form {
     background-color: var(--secondary-bg-color);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    padding: var(--spacing-sm) var(--spacing-md);
-
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    flex-wrap: wrap;
-
-    /* Transição para o efeito de esconder/mostrar */
-    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* A CLASSE que esconde a barra */
-.floating-nav-bar.hidden {
-    /* Empurra a barra totalmente para fora da tela, acima do topo */
-    transform: translateY(-150px);
+body.light-mode input[type="text"],
+body.light-mode input[type="email"],
+body.light-mode input[type="password"],
+body.light-mode select,
+body.light-mode textarea {
+    background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    color: var(--text-color);
 }
 
-.floating-nav-bar .nav-button {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: 0.95rem;
-    flex-grow: 0;
-    min-width: 120px;
+body.light-mode .anime-card {
+    background-color: var(--card-bg-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #d0d0d0;
 }
+
+body.light-mode .anime-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
 
 /* ========================================================================= */
-/* --- MEDIA QUERIES PARA RESPONSIVIDADE (Corrigido) --- */
+/* --- MEDIA QUERIES PARA RESPONSIVIDADE (Ajustado) --- */
 /* ========================================================================= */
 
 /* Mobile e Tablet Retrato (max-width: 767px) */
@@ -529,17 +567,15 @@ p a {
         /* Garante que ocupe a largura total */
         width: 100%;
         padding: var(--spacing-sm);
+        /* Mantém o flex-wrap padrão para quebrar a linha */
     }
 
     .dashboard-content {
-        /* Ajusta o padding top para acomodar o header fixo e a barra flutuante no mobile */
-        padding-top: 150px;
+        /* Ajusta o padding top para acomodar a barra única que pode ocupar 2 linhas */
+        padding-top: 130px;
     }
 
-    .floating-nav-bar {
-        /* Ajusta a posição no mobile para ficar abaixo do header fixo (aprox. 55px) */
-        top: 55px;
-    }
+    /* 🛑 REMOVIDO: Regras para .floating-nav-bar */
 }
 
 
@@ -555,18 +591,19 @@ p a {
     h2 { font-size: 2rem; }
     h3 { font-size: 1.5rem; }
 
-    /* Dashboard: Remove o offset de padding superior */
+    /* Dashboard: Ajusta o padding top para acomodar o header de 1 linha */
     .dashboard-content {
-        padding-top: 20px;
+        padding-top: 80px;
     }
 
     /* 🛑 CORREÇÃO NO CONTAINER FIXO (Desktop/Tablet) */
     .header-fixed-container {
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: space-between;
         padding: var(--spacing-sm) var(--spacing-lg);
         align-items: center;
-        gap: var(--spacing-md); /* Espaçamento entre busca e logout */
+        flex-wrap: nowrap; /* Não quebra a linha no desktop */
+        gap: var(--spacing-md);
     }
 
     /* Reposiciona o botão de voltar */
@@ -584,21 +621,17 @@ p a {
         left: 0;
     }
 
-    /* 🛑 Posição do floating nav no desktop, abaixo do header (60px) */
-    .floating-nav-bar {
-        top: 60px;
-        padding: var(--spacing-sm) var(--spacing-lg);
-    }
+    /* 🛑 REMOVIDO: Regras para .floating-nav-bar */
 
-
-    /* 🛑 Ajuste da Busca */
+    /* Ajuste da Busca */
     .header-search-form {
         flex-direction: row;
-        max-width: 300px;
+        max-width: 350px;
         width: auto;
+        flex-grow: 0;
     }
 
-    /* 🛑 Garante que o botão de logout não seja esmagado */
+    /* Garante que o botão de logout não seja esmagado */
     .fixed-logout-button {
         width: auto;
         flex-shrink: 0;
@@ -646,4 +679,3 @@ p a {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #c93a52;
-}
