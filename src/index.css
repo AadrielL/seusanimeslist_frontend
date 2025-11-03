@@ -1,4 +1,5 @@
 :root {
+    /* MODO DARK PADRÃO (SEMPRE DEFINIDO PARA O :ROOT) */
     --primary-bg-color: #1a1a2e; /* Azul escuro principal */
     --secondary-bg-color: #16213e; /* Azul escuro um pouco mais claro */
     --card-bg-color: #0f3460; /* Azul médio para cards */
@@ -8,6 +9,15 @@
     --success-color: #28a745; /* Verde para sucesso */
     --error-color: #dc3545; /* Vermelho para erro */
     --info-color: #007bff; /* Azul para informação */
+
+    /* Cores Cyberpunk/Emo para o Login (apenas background/shadow principal) */
+    --cyber-bg-color: #0a0a0a; /* Quase preto */
+    --cyber-border-color: #8a2be2; /* Azul violeta elétrico */
+    --cyber-shadow-color: rgba(138, 43, 226, 0.7); /* Sombra neon */
+    --cyber-text-color: #00ffff; /* Ciano elétrico */
+    --cyber-input-bg: #1e093d; /* Roxo escuro */
+    --cyber-input-border: #4b0082; /* Roxo mais escuro */
+    --cyber-button-bg: #e94560; /* Destaque vermelho/rosa */
 
     /* Espaçamento */
     --spacing-xs: 5px;
@@ -19,10 +29,34 @@
     /* Bordas */
     --border-radius-sm: 4px;
     --border-radius-md: 8px;
+    --border-radius-lg: 12px;
 
     /* Sombras */
     --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
+
+/* ========================================================================= */
+/* --- MODO LIGHT (Vars para quando .light-mode estiver no body) --- */
+/* ========================================================================= */
+body.light-mode {
+    --primary-bg-color: #f0f0f5; /* Fundo claro */
+    --secondary-bg-color: #ffffff; /* Fundo mais claro para seções */
+    --card-bg-color: #e0e0e5; /* Card claro e neutro */
+    --text-color: #1a1a2e; /* Texto escuro */
+    --highlight-color: #0f3460; /* Azul escuro para destaque (títulos) */
+    --accent-color: #e94560; /* Vermelho/Rosa (Mantido para botões) */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra mais leve */
+
+    /* Ajustes específicos para Light Mode */
+    --cyber-bg-color: #f0f0f5; /* Mantém o padrão do light mode para o fundo do login */
+    --cyber-border-color: #0f3460; /* Borda azul escuro */
+    --cyber-shadow-color: rgba(15, 52, 96, 0.4); /* Sombra mais discreta */
+    --cyber-text-color: #e94560; /* Texto de destaque em vermelho */
+    --cyber-input-bg: #ffffff; /* Input branco */
+    --cyber-input-border: #d0d0d0; /* Borda input cinza */
+    --cyber-button-bg: #e94560; /* Botão principal mantido */
+}
+
 
 /* Base e Layout */
 body {
@@ -32,7 +66,6 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     overflow-y: scroll;
-    /* Transição suave para o modo light/dark */
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -52,6 +85,7 @@ h1, h2, h3 {
     margin-bottom: var(--spacing-md);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     font-size: 1.8rem;
+    transition: color 0.3s, text-shadow 0.3s;
 }
 
 h2 { font-size: 1.5rem; }
@@ -72,9 +106,10 @@ hr {
     border-top: 1px solid var(--card-bg-color);
     margin: var(--spacing-lg) 0;
     width: 100%;
+    transition: border-color 0.3s;
 }
 
-/* Formulários e Inputs */
+/* Formulários e Inputs PADRÃO (fora do login/auth-container) */
 form {
     background-color: var(--secondary-bg-color);
     padding: var(--spacing-md);
@@ -87,7 +122,6 @@ form {
     max-width: 400px;
     margin-bottom: var(--spacing-md);
     box-sizing: border-box;
-    /* Transição para modo light/dark */
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
@@ -116,7 +150,6 @@ textarea {
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
-    /* Transição para modo light/dark */
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
@@ -183,33 +216,96 @@ p a {
     font-weight: bold;
 }
 
-/* Contêiner de Autenticação */
+/* ========================================================================= */
+/* --- CONTÊINER DE AUTENTICAÇÃO (LOGIN/REGISTRO) - CYBERPUNK/EMO --- */
+/* ========================================================================= */
 .auth-container {
-    background-color: var(--secondary-bg-color);
+    background-color: var(--cyber-bg-color); /* Fundo quase preto */
     padding: var(--spacing-lg);
-    border-radius: var(--border-radius-md);
-    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius-lg); /* Bordas mais arredondadas */
+    box-shadow: 0 0 20px var(--cyber-shadow-color); /* Sombra neon violeta */
+    border: 2px solid var(--cyber-border-color); /* Borda violeta */
     max-width: 500px;
     width: 100%;
-    margin: var(--spacing-md) auto;
+    margin: var(--spacing-xl) auto; /* Mais espaçamento para destacar */
     text-align: center;
     box-sizing: border-box;
-    /* Transição para modo light/dark */
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: all 0.5s ease-in-out; /* Transição para o modo light */
+}
+
+.auth-container h1 {
+    color: var(--cyber-text-color); /* Título ciano elétrico */
+    text-shadow: 0 0 10px var(--cyber-text-color); /* Brilho neon no título */
+    margin-bottom: var(--spacing-lg);
+}
+
+.auth-container form {
+    background-color: transparent; /* Fundo transparente para o form dentro do container */
+    box-shadow: none; /* Sem sombra no form interno */
+    gap: var(--spacing-md);
+    margin-bottom: 0; /* Remove margem inferior padrão */
+}
+
+.auth-container label {
+    color: var(--cyber-text-color); /* Labels em ciano */
+    text-align: left;
+    margin-left: var(--spacing-xs);
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"] {
+    background-color: var(--cyber-input-bg); /* Fundo roxo escuro */
+    border: 1px solid var(--cyber-input-border); /* Borda roxa */
+    color: var(--cyber-text-color); /* Texto em ciano */
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm);
+    box-shadow: inset 0 0 5px rgba(0, 255, 255, 0.2); /* Brilho interno no input */
+}
+
+.auth-container input:focus {
+    border-color: var(--cyber-text-color); /* Borda ciano ao focar */
+    box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.5), inset 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+.auth-container button {
+    background-color: var(--cyber-button-bg); /* Botão principal */
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: var(--spacing-md);
+}
+
+.auth-container button:hover {
+    background-color: #c93a52; /* Hover mais escuro */
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.7); /* Brilho no hover */
 }
 
 .auth-container p {
     margin-top: var(--spacing-md);
+    color: var(--text-color); /* Cor do texto normal */
 }
 
-/* Mensagens Globais e de Formulário */
+.auth-container p a {
+    color: var(--cyber-text-color); /* Links em ciano */
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.auth-container p a:hover {
+    text-decoration: underline;
+    color: #00ffff;
+}
+
+
+/* Mensagens Globais e de Formulário (Mantido padrão) */
 .global-message-container {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-bottom: var(--spacing-md);
     z-index: 1000;
-    margin-top: 60px;
+    margin-top: 60px; /* Ajuste inicial para não ficar atrás do header */
 }
 
 .global-message {
@@ -253,12 +349,8 @@ p a {
     align-items: center;
     gap: var(--spacing-md);
     /* Ajustado para acomodar a barra única que some (Mobile) */
-    padding-top: 130px;
+    padding-top: 130px; /* Será ajustado na Media Query para desktop */
 }
-
-/* 🛑 REMOVIDO: dashboard-nav (não é mais usado, a navegação está no header fixo) */
-/* 🛑 REMOVIDO: nav-button (será redefinido para ser menor dentro do header) */
-
 
 /* ========================================================================= */
 /* --- HEADER FIXO ÚNICO (Busca, Nav, Logout) --- */
@@ -276,19 +368,20 @@ p a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md); /* Aumenta o padding vertical */
     gap: var(--spacing-sm);
     box-sizing: border-box;
     flex-wrap: wrap;
+    min-height: 60px; /* Aumenta a altura mínima da barra */
 
-    /* 🛑 REGRAS PARA SUMIR/APARECER 🛑 */
-    transition: transform 0.3s ease-in-out, background-color 0.3s, box-shadow 0.3s;
+    /* Transições para o efeito de esconder/mostrar e modo light/dark */
+    transition: transform 0.3s ease-in-out, background-color 0.3s, box-shadow 0.3s, min-height 0.3s;
 }
 
-/* 🛑 CLASSE QUE FAZ A BARRA SUMIR 🛑 */
+/* CLASSE QUE FAZ A BARRA SUMIR */
 .header-fixed-container.hidden {
-    /* Move a barra totalmente para fora da tela */
-    transform: translateY(-120px);
+    /* Ajuste o valor exato, um pouco mais que a altura da barra para garantir que suma totalmente */
+    transform: translateY(-100%);
 }
 
 /* Container para agrupar os botões de navegação (lado esquerdo) */
@@ -310,7 +403,7 @@ p a {
     min-width: 100px;
     text-align: center;
     border-radius: var(--border-radius-sm);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s;
 }
 
 .main-nav-buttons .nav-button:hover {
@@ -331,6 +424,7 @@ p a {
     width: 100%;
     max-width: none;
     flex-grow: 1; /* Permite ocupar o espaço restante */
+    transition: background-color 0.3s;
 }
 
 .header-search-form input {
@@ -338,6 +432,7 @@ p a {
     font-size: 0.85rem;
     flex-grow: 1;
     min-width: 100px;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .header-search-form button {
@@ -509,53 +604,6 @@ p a {
     white-space: nowrap;
 }
 
-/* 🛑 REMOVIDO: BARRA DE NAVEGAÇÃO FLUTUANTE/STICKY (.floating-nav-bar) */
-
-
-/* ========================================================================= */
-/* --- MODO LIGHT (Adicionado) --- */
-/* ========================================================================= */
-body.light-mode {
-    --primary-bg-color: #f0f0f5; /* Fundo claro */
-    --secondary-bg-color: #ffffff; /* Fundo mais claro */
-    --card-bg-color: #e0e0e5; /* Card claro */
-    --text-color: #1a1a2e; /* Texto escuro */
-    --highlight-color: #0f3460; /* Azul escuro para destaque */
-    --accent-color: #e94560; /* Vermelho/Rosa (Mantido) */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-body.light-mode h1,
-body.light-mode h2,
-body.light-mode h3 {
-    color: var(--highlight-color);
-}
-
-body.light-mode form {
-    background-color: var(--secondary-bg-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-body.light-mode input[type="text"],
-body.light-mode input[type="email"],
-body.light-mode input[type="password"],
-body.light-mode select,
-body.light-mode textarea {
-    background-color: #ffffff;
-    border: 1px solid #c0c0c0;
-    color: var(--text-color);
-}
-
-body.light-mode .anime-card {
-    background-color: var(--card-bg-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border: 1px solid #d0d0d0;
-}
-
-body.light-mode .anime-card:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
 
 /* ========================================================================= */
 /* --- MEDIA QUERIES PARA RESPONSIVIDADE (Ajustado) --- */
@@ -575,7 +623,10 @@ body.light-mode .anime-card:hover {
         padding-top: 130px;
     }
 
-    /* 🛑 REMOVIDO: Regras para .floating-nav-bar */
+    /* Ajusta a mensagem global no mobile */
+    .global-message-container {
+        margin-top: 120px; /* Mais espaço para o header que pode estar em duas linhas */
+    }
 }
 
 
@@ -596,7 +647,7 @@ body.light-mode .anime-card:hover {
         padding-top: 80px;
     }
 
-    /* 🛑 CORREÇÃO NO CONTAINER FIXO (Desktop/Tablet) */
+    /* CORREÇÃO NO CONTAINER FIXO (Desktop/Tablet) */
     .header-fixed-container {
         flex-direction: row;
         justify-content: space-between;
@@ -604,6 +655,7 @@ body.light-mode .anime-card:hover {
         align-items: center;
         flex-wrap: nowrap; /* Não quebra a linha no desktop */
         gap: var(--spacing-md);
+        min-height: 70px; /* Altura um pouco maior no desktop */
     }
 
     /* Reposiciona o botão de voltar */
@@ -615,13 +667,11 @@ body.light-mode .anime-card:hover {
     /* Centraliza a mensagem global sem ser afetada pelo header */
     .global-message-container {
         margin-top: 0;
-        top: 80px;
+        top: 80px; /* Ajuste para desktop */
         position: fixed;
         width: 100%;
         left: 0;
     }
-
-    /* 🛑 REMOVIDO: Regras para .floating-nav-bar */
 
     /* Ajuste da Busca */
     .header-search-form {
@@ -679,3 +729,4 @@ body.light-mode .anime-card:hover {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #c93a52;
+}
