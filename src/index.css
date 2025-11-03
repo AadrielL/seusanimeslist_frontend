@@ -766,6 +766,7 @@ body {
 }
 
 /* O resto do .auth-background-wrapper::before e .auth-container permanece o mesmo */
+/* Pseudo-elemento para criar um 'overlay' (camada escura ou colorida) */
 .auth-background-wrapper::before {
     content: "";
     position: absolute;
@@ -773,13 +774,13 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    /* Adiciona um overlay preto com 60% de opacidade */
     background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(2px);
-    z-index: 2;
-}
 
-.auth-container {
-    /* ... (suas regras existentes) ... */
-    position: relative;
-    z-index: 3;
+    /* 🛑 AJUSTE DE QUALIDADE: REDUZINDO O DESFOQUE (BLUR) */
+    /* De: backdrop-filter: blur(2px); */
+    /* Para: */
+    backdrop-filter: blur(1px); /* Reduzindo o desfoque para 1px */
+
+    z-index: 2;
 }
