@@ -303,20 +303,26 @@ p a {
 
 
 /* Mensagens Globais e de Formulário (CORRIGIDO) */
+/* Mensagens Globais e de Formulário */
 .global-message-container {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: var(--spacing-md);
+    /* Remover ou comentar: margin-bottom: var(--spacing-md); */ /* Não precisamos de margem inferior aqui */
 
-    /* 🛑 CORREÇÃO DE Z-INDEX E POSICIONAMENTO 🛑 */
     position: fixed;
-    top: 0;
     left: 0;
     z-index: 9999;
-    padding-top: 80px; /* Garante que comece abaixo do header fixo */
+
+    /* 🛑 AJUSTE CRÍTICO: Posiciona logo abaixo do header */
+    /* Assumindo que seu header tem aproximadamente 60-70px de altura em mobile e desktop. */
+    /* Vamos colocar um valor um pouco maior para garantir que não cubra o header. */
+    top: 70px; /* Altere este valor para 70px. Se ainda encostar, tente 80px. */
+
+    /* Remover ou comentar: padding-top: 100px; */ /* Este valor empurrava demais para baixo */
 }
 
+/* O .global-message permanece inalterado */
 .global-message {
     padding: var(--spacing-sm);
     border-radius: var(--border-radius-sm);
@@ -330,7 +336,6 @@ p a {
     align-items: center;
     justify-content: center;
 }
-
 .global-message.success {
     background-color: rgba(40, 167, 69, 0.2);
     color: var(--success-color);
