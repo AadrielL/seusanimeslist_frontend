@@ -708,43 +708,7 @@ p a {
 /* --- CONTÊINER DE FUNDO DA TELA DE AUTENTICAÇÃO --- */
 /* ========================================================================= */
 
-/* Contêiner que envolve todo o conteúdo da tela de login/registro (onde a imagem será aplicada) */
-.auth-background-wrapper {
-    /* Ocupa a tela toda */
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente o auth-container */
-    align-items: center;    /* Centraliza verticalmente o auth-container */
-
-    /* 🛑 IMPORTANTE: Configuração da Imagem (ASSUME: background_login.jpg na pasta public/) 🛑 */
-    background-image: url('background_login.jpg.png');
-    background-size: cover;          /* Garante que a imagem cubra todo o fundo */
-    background-position: center center; /* Centraliza a imagem */
-    background-attachment: fixed;    /* Mantém a imagem fixa ao rolar (efeito paralaxe sutil) */
-    background-repeat: no-repeat;
-
-    /* Adiciona uma camada escura para melhorar a leitura do formulário */
-    position: relative;
-    z-index: 1; /* Garante que os pseudo-elementos funcionem */
-}
-
-/* Pseudo-elemento para criar um 'overlay' (camada escura ou colorida) */
-.auth-background-wrapper::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Adiciona um overlay preto com 60% de opacidade */
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(2px); /* Adiciona um leve desfoque ao fundo */
-    z-index: 2;
-}
-/* ========================================================================= */
-/* --- Base e Layout --- */
-/* ========================================================================= */
+/*
 
 /* 🛑 NOVO: Garante que HTML e BODY ocupem a altura e largura total da janela */
 html, body {
@@ -789,7 +753,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    background-image: url('/background_login.jpg');
+    background-image: url('background_login.jpg.png');
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
