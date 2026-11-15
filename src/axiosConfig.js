@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // A URL base do seu backend no Render
-const backendUrl = 'https://seusanimeslist-backendd2.onrender.com';
+const backendUrl = 'https://srv2141829.hstgr.cloud';
 
 const api = axios.create({
     baseURL: backendUrl,
